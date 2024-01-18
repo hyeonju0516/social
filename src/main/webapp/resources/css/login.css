@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+#wrap{
+	margin:0 auto;
+}
+
+#wrap a{
+	display:block;
+}
