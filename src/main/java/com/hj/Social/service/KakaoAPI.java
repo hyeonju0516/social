@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -46,7 +45,7 @@ public class KakaoAPI {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=0091e3579906d8421181b9f2d8d7657e");
-			sb.append("&redirect_uri=http://localhost:8080/social/login");
+			sb.append("&redirect_uri=http://localhost:8080/social/klogin");
 			sb.append("&code=" + authorize_code);
 			sb.append("&client_secret=4HnX7dcLmeCLUddzAWlVKwcQu3jRYB3x");
 			bw.write(sb.toString());

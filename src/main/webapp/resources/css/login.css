@@ -6,4 +6,12 @@
 
 #wrap a{
 	display:block;
+	width:300px;
+	margin-bottom:5px;
+}
+
+#wrap a img{
+	display:block;
+	width:100%;
+	height:auto;
 }
