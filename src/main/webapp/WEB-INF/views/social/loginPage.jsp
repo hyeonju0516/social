@@ -16,6 +16,7 @@
    	  <img src="/resources/images/naver.png" alt="naverLogin IMG" />
    </a>
    <a href="">google 로그인</a>
+   
 </div>
 </body>
 </html>

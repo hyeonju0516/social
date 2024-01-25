@@ -1,24 +1,29 @@
 package com.hj.Social.service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hj.Social.domain.OauthId;
+import com.hj.Social.entity.User;
+import com.hj.Social.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class NaverAPI {
+	
+	private final UserRepository repository;
 
 	public String getAccessToken(String code) {
 
@@ -71,17 +76,85 @@ public class NaverAPI {
 
 			return element.getAsJsonObject().get("access_token").getAsString();
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("getAccessToken Exception"+ e);
 			
 			return null;
 		}
 
 	}
 	
-	public String getUserInfo(String access_token) {
+	public Optional<User> getUserInfo(String accessToken) throws IOException {
+
+		// 네이버 로그인 접근 토큰;
+		String apiURL = "https://openapi.naver.com/v1/nid/me";
+		String headerStr = "Bearer " + accessToken; // Bearer 다음에 공백 추가
+		String result = requestToServer(apiURL, headerStr);
+		System.out.println("사용자 정보 " + result);
 		
 		
-		return "성공";
+		JsonParser parser = new JsonParser();
+		JsonElement element = parser.parse(result);
+		
+		JsonObject response = element.getAsJsonObject().get("response").getAsJsonObject();
+		System.out.println("*****response: " + response);
+		
+		String token_id = response.getAsJsonObject().get("id").getAsString();
+		String nickname = response.getAsJsonObject().get("name").getAsString();
+		String email = response.getAsJsonObject().get("email").getAsString();
+		System.out.println("email" +  email);
+
+		Optional<User> opt_user = repository.findById(new OauthId("naver", token_id));
+		System.out.println("--------opt_user : " + opt_user);
+		
+		User user = new User();
+		if (opt_user.isPresent()) {
+			return opt_user;
+		}else {
+			user.setUseremail(email);
+			user.setUsername(nickname);
+			user.setOauthtype("naver");
+			user.setOauthtoken(token_id);
+			repository.save(user);
+			
+			return Optional.of(user);
+		}
+
 	}
 
+
+	private String requestToServer(String apiURL, String headerStr) throws IOException {
+		URL url = new URL(apiURL);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("GET");
+		
+		System.out.println("header Str: " + headerStr);
+		
+		if (headerStr != null && !headerStr.equals("")) {
+			con.setRequestProperty("Authorization", headerStr);
+		}
+		
+		int responseCode = con.getResponseCode();
+		
+		BufferedReader br;
+		System.out.println("responseCode=" + responseCode);
+		
+		if (responseCode == 200) { // 정상 호출
+			br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		} else { // 에러 발생
+			br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+		}
+		
+		String inputLine;
+		StringBuffer res = new StringBuffer();
+		
+		while ((inputLine = br.readLine()) != null) {
+			res.append(inputLine);
+		}
+		br.close();
+		if (responseCode == 200) {
+			return res.toString();
+		} else {
+			return null;
+		}
+	}
 }

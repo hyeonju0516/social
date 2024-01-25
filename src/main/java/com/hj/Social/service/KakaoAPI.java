@@ -141,10 +141,7 @@ public class KakaoAPI {
 				System.out.println("user!!!!!!!" + user);
 				repository.save(user);
 			    
-			}else {
-				return "실패";
 			}
-			
 			
 			br.close();
 			
