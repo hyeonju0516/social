@@ -1,7 +1,5 @@
 package com.hj.Social.controller;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -9,11 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hj.Social.entity.User;
-import com.hj.Social.service.KakaoAPI;
-import com.hj.Social.service.NaverAPI;
+import com.hj.Social.service.LoginService;
 
 import lombok.AllArgsConstructor;
 
@@ -22,26 +18,33 @@ import lombok.AllArgsConstructor;
 @Controller
 public class LoginController {
 
-	private KakaoAPI kakao;
-	private NaverAPI naver;
+	private LoginService loginService;
 	
 
 	@GetMapping("/loginPage")
 	public void getLoginPage() {
 
 	}
+	
 
 	@GetMapping("/klogin")
-	public String klogin(@RequestParam("code") String code) {
-		System.out.println(code);
-		String access_token = kakao.getAccessToken(code);
-		System.out.println("controller access_token : " + access_token);
+	public String klogin(@RequestParam("code") String code,HttpSession session) {
+		
+		String access_token = loginService.getAccessToken(code, "kakao");
 
-		String userInfo = kakao.getUserInfo(access_token);
+		try {
+			User userInfo = loginService.getUserInfo(access_token,"kakao");
+			System.out.println("*****************"+userInfo);
 
-		if ("성공".equals(userInfo)) {
-			return "redirect:/home";
-		} else {
+			if (userInfo != null) {
+				session.setAttribute("loginUser", userInfo);
+				return "redirect:/home";
+			} else {
+				return "redirect:/social/loginPage";
+			}
+			
+		} catch (Exception e) {
+			
 			return "redirect:/social/loginPage";
 		}
 
@@ -51,10 +54,34 @@ public class LoginController {
 	public String nlogin(@RequestParam("code") String code, Model model, HttpSession session) {
 		System.out.println(code);
 
-		String access_token = naver.getAccessToken(code);
+		String access_token = loginService.getAccessToken(code, "naver");
 
 		try {
-			User userInfo = naver.getUserInfo(access_token).orElse(null);
+			User userInfo = loginService.getUserInfo(access_token,"naver");
+			System.out.println("*****************"+userInfo);
+
+			if (userInfo != null) {
+				session.setAttribute("loginUser", userInfo);
+				return "redirect:/home";
+			} else {
+				return "redirect:/social/loginPage";
+			}
+			
+		} catch (Exception e) {
+			
+			return "redirect:/social/loginPage";
+		}
+
+	}
+	
+	@GetMapping("/glogin")
+	public String glogin(@RequestParam("code") String code, Model model, HttpSession session) {
+		System.out.println(code);
+
+		String access_token = loginService.getAccessToken(code, "google");
+
+		try {
+			User userInfo = loginService.getUserInfo(access_token,"google");
 			System.out.println("*****************"+userInfo);
 
 			if (userInfo != null) {

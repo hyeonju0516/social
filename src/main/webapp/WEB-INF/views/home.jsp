@@ -5,22 +5,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>메인 페이지</title>
+<link rel="stylesheet" href="/resources/css/login.css">
 </head>
 <body>
-   <h2>메롱메롱 테스트</h2>
-
-   <c:if test="${not empty sessionScope.loginUser}">
-   	${sessionScope.loginUser.username}님 안녕하세요.
-   	<br/>
-   	<a href="social/logout">로그아웃</a>
-   	<a>게시판가기</a>
-   </c:if>
-   
-   <c:if test="${empty sessionScope.loginUser}">
-   	<a href="social/loginPage">로그인</a>
-   </c:if>
-  
+   <div id="wrap">
+	   <h1>메인 페이지</h1>
+	
+	   <c:if test="${not empty sessionScope.loginUser}">
+	   	<p> ${sessionScope.loginUser.username}님 안녕하세요!<br/>
+	   		${sessionScope.loginUser.oauthtype}로 로그인하셨습니다.
+	    </p>
+	    <hr/>
+	   	<a>게시판가기</a>
+	   	<a href="social/logout">로그아웃</a>
+	   </c:if>
+	   
+	   <c:if test="${empty sessionScope.loginUser}">
+	   	<a href="social/loginPage">로그인</a>
+	   </c:if>
+   </div>
    
 </body>
 </html>

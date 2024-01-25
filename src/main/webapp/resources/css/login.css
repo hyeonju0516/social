@@ -1,16 +1,21 @@
 @charset "UTF-8";
 
 #wrap{
-	margin:0 auto;
-}
-
-#wrap a{
-	display:block;
 	width:300px;
-	margin-bottom:5px;
+	margin:0 auto;
+	text-align:center;
 }
 
-#wrap a img{
+#wrap p{
+	margin:20px 0;
+}
+
+#wrap .socialBox a{
+	margin-bottom:8px;
+}
+
+#wrap .socialBox a,
+#wrap .socialBox a img{
 	display:block;
 	width:100%;
 	height:auto;
