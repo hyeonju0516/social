@@ -19,7 +19,7 @@
 	   	  <img src="/resources/images/naver.png" alt="naverLogin IMG" />
 	   </a>
 	   
-	   <a href="https://accounts.google.com/o/oauth2/auth?client_id=995527437477-r10jn77e4tp2u0nhp7moaiusg4oo30gc.apps.googleusercontent.com&redirect_uri=http://localhost:8080/social/glogin&response_type=code&scope=https://www.googleapis.com/auth/userinfo.emailhttps://www.googleapis.com/auth/userinfo.profile">
+	   <a href="https://accounts.google.com/o/oauth2/auth?client_id=995527437477-r10jn77e4tp2u0nhp7moaiusg4oo30gc.apps.googleusercontent.com&redirect_uri=http://localhost:8080/social/glogin&response_type=code&scope=email%20profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20openid&authuser=0&prompt=consent">
 	   		<img src="/resources/images/google.png" alt="googleLogin IMG" />
 	   </a>
    </div>

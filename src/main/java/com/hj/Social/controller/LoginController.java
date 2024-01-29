@@ -76,7 +76,7 @@ public class LoginController {
 	
 	@GetMapping("/glogin")
 	public String glogin(@RequestParam("code") String code, Model model, HttpSession session) {
-		System.out.println(code);
+		System.out.println("코드정보"+code);
 
 		String access_token = loginService.getAccessToken(code, "google");
 

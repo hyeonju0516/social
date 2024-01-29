@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# .gitignore
+# 키 페어 파일 무시
+social.pem
+
+
