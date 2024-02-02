@@ -8,6 +8,7 @@ class SocialApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("Context loads test");
 	}
 
 }
