@@ -11,7 +11,7 @@
 	<groupId>com.hj</groupId>
 	<artifactId>Social</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>Social</name>
 	<description>Social Login for Spring Boot</description>
 	<properties>
