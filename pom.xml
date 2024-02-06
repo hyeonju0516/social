@@ -11,6 +11,7 @@
 	<groupId>com.hj</groupId>
 	<artifactId>Social</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>Social</name>
 	<description>Social Login for Spring Boot</description>
 	<properties>
@@ -26,6 +27,7 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		 
+		<!-- aws배포를 위한 설정 -->
 		<dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-tomcat</artifactId>
