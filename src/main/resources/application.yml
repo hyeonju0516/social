@@ -2,7 +2,7 @@ server:
   port: 8080
   servlet:
     context-path: /
-    tomcat:
+  tomcat:
     uri-encoding: UTF-8
 
 spring:
