@@ -1,0 +1,13 @@
+{
+  "name": "social",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev -p 3060",
+    "build": "ANALYZE=true NODE_ENV=production next build",
+    "start": "NODE_ENV=production next start -p 80"
+  },
+  "author": "",
+  "license": "ISC"
+}
