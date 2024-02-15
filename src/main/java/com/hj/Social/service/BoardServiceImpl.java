@@ -1,14 +1,17 @@
 package com.hj.Social.service;
 
-import static com.hj.Social.entity.QBoard.board;
-
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.hj.Social.domain.PageRequestDTO;
+import com.hj.Social.domain.PageResultDTO;
 import com.hj.Social.entity.Board;
+import com.hj.Social.entity.Comments;
+import com.hj.Social.entity.QBoard;
 import com.hj.Social.repository.BoardRepository;
+import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -17,18 +20,43 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
 	
+	private final QBoard board = QBoard.board;
 	private final BoardRepository repository;
 	private final JPAQueryFactory queryFactory;
 	
 	@Override
-	public List<Board> selectList(){
-		return queryFactory.selectFrom(board)
-				.where(board.board_delyn.eq("N"))
-				.orderBy(board.board_id.desc())
-				.fetch();
+	public PageResultDTO<Board> selectList(PageRequestDTO requestDTO, String searchType, String keyword) {
+	    BooleanExpression searchCondition = getSearchCondition(searchType, keyword);
+
+	    QueryResults<Board> result = queryFactory
+	            .selectFrom(board)
+	            .where(board.board_delyn.eq("N").and(searchCondition))
+	            .orderBy(board.board_id.desc())
+	            .offset(requestDTO.getPageable().getOffset())
+	            .limit(requestDTO.getPageable().getPageSize())
+	            .fetchResults();
+
+	    return new PageResultDTO<>(result, requestDTO.getPageable());
 	}
-	
-	@Override
+
+    private BooleanExpression getSearchCondition(String searchType, String keyword) {
+        if ("all".equals(searchType) || "".equals(keyword)) {
+            return null;
+        }
+
+        switch (searchType) {
+        	case "useremail":
+        		return board.useremail.contains(keyword);
+            case "board_title":
+                return board.board_title.contains(keyword);
+            case "board_content":
+                return board.board_content.contains(keyword);
+            default:
+                return null;
+        }
+    }
+    
+    @Override
 	public Board selectDetail(int id){
 		Optional<Board> board = repository.findById(id);
 		

@@ -7,6 +7,8 @@ import java.util.stream.IntStream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.querydsl.core.QueryResults;
+
 import lombok.Data;
 
 
@@ -25,13 +27,18 @@ public class PageResultDTO<EN> {
     private boolean prev, next;  //이전, 다음
     private List<Integer> pageList; //페이지 번호 목록
 	
-    public PageResultDTO(Page<EN> result){
-    	
-    	entityList = result.getContent(); 
+    
+    public PageResultDTO(Page<EN> result) {
+        entityList = result.getContent();
         totalPage = result.getTotalPages();
         makePageList(result.getPageable());
-        
-    } //생성자
+    }
+
+    public PageResultDTO(QueryResults<EN> queryResults, Pageable pageable) {
+        entityList = queryResults.getResults();
+        totalPage = (int) Math.ceil((double) queryResults.getTotal() / pageable.getPageSize());
+        makePageList(pageable);
+    }
 
     private void makePageList(Pageable pageable){
 

@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>커뮤니티 게시판</title>
+<script>
+	history.replaceState({}, null, location.pathname);
+</script>
 </head>
 <body>
 <div id="wrap">
@@ -37,8 +40,8 @@
    <div class="pageNation">
         <c:choose>
              <c:when test="${resultDTO.start != resultDTO.page}">
-                  <a class ="firstB" href="cartList?page=${resultDTO.start}&searchType=${searchType}&keyword=${keyword}">처음</a>
-                  <a class ="ltB" href="cartList?page=${resultDTO.page-1}&searchType=${searchType}&keyword=${keyword}">&LT;</a>
+                  <a class ="firstB" href="/board/?page=${resultDTO.start}&searchType=${searchType}&keyword=${keyword}">처음</a>
+                  <a class ="ltB" href="/board/?page=${resultDTO.page-1}&searchType=${searchType}&keyword=${keyword}">&LT;</a>
              </c:when>
              <c:otherwise>
                   <span class ="firstB">처음</span>
@@ -51,14 +54,14 @@
                  <span><strong>${i}</strong></span>&nbsp;
              </c:if>
              <c:if test="${i!=resultDTO.page}">
-                 <a href="cartList?page=${i}&searchType=${searchType}&keyword=${keyword}">${i}</a>&nbsp;
+                 <a href="/board/?page=${i}&searchType=${searchType}&keyword=${keyword}">${i}</a>&nbsp;
              </c:if>
          </c:forEach>
                 
          <c:choose>
              <c:when test="${resultDTO.end != resultDTO.page}">
-                 <a class="gtB" href="cartList?page=${resultDTO.page+1}&searchType=${searchType}&keyword=${keyword}">&GT;</a>
-                 <a class="lastB" href="cartList?page=${resultDTO.end}&searchType=${searchType}&keyword=${keyword}">마지막</a>
+                 <a class="gtB" href="/board/?page=${resultDTO.page+1}&searchType=${searchType}&keyword=${keyword}">&GT;</a>
+                 <a class="lastB" href="/board/?page=${resultDTO.end}&searchType=${searchType}&keyword=${keyword}">마지막</a>
              </c:when>
              <c:otherwise>
                  <span class="gtB">&GT;</span>

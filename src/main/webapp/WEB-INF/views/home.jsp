@@ -17,7 +17,7 @@
 	   		${sessionScope.loginUser.oauthtype}로 로그인하셨습니다.
 	    </p>
 	    <hr/>
-	   	<a>게시판가기</a>
+	   	<a href="board/">게시판가기</a>
 	   	<a href="social/logout">로그아웃</a>
 	   </c:if>
 	   
