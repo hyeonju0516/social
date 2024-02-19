@@ -26,6 +26,6 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
 
-logging:
-  level:
-    root: debug
+#logging:
+#  level:
+#    root: debug
