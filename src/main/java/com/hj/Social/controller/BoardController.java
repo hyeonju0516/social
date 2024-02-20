@@ -5,14 +5,16 @@ import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.hj.Social.domain.PageRequestDTO;
@@ -47,11 +49,16 @@ public class BoardController {
 	
 	@GetMapping(value ="/{board_id}")
 	public String getBoardDetail(HttpServletRequest request, Model model, @PathVariable("board_id") int id) {
-		model.addAttribute("boardDetail", boardService.selectDetail(id));
+		
+		Board entity = boardService.selectDetail(id);
 		
 		if ( "U".equals(request.getParameter("jCode")) ) {
+			model.addAttribute("boardDetail", entity);
 			return "board/boardUpdate";
 		}else {
+			entity.setBoard_views(entity.getBoard_views()+1);
+			boardService.save(entity);
+			model.addAttribute("boardDetail", entity);
 			return "board/boardDetail";
 		}
 	}
@@ -105,32 +112,53 @@ public class BoardController {
 		
 	}
 	
-	@GetMapping(value="/delete")
-	public String deleteBoard(@RequestParam("board_id") int board_id) {
+	@PostMapping(value="/delete")
+	@ResponseBody
+	public String deleteBoard(@RequestBody int id) {
 		
-		System.out.println("board_id ************" + board_id);
+		System.out.println(id);
 		
 		try {
-			if(board_id > 0) {
-				Board entity = boardService.selectDetail(board_id);
+			
+			Board entity = boardService.selectDetail(id);
+			if(entity != null) {
 				entity.setBoard_delyn("Y");
 				entity.setBoard_deldate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 				boardService.save(entity);
 				
-				return "redirect:/board/";
+				return "성공";
 			}else {
-				return "board/boardDetail";
+				return "실패";
 			}
 		} catch (Exception e) {
 			System.out.println("Board Delete Exception => "+e.toString());
-			return "redirect:/board/boardDetail";
+			return "실패";
 		}
 		
 		
 	}
 
 	
+    // LIKES
+	
+	private boolean isLiked = false;
+	
+	@PostMapping("/like")
+	@ResponseBody
+    public String toggleLike(@RequestBody int id) {
+        isLiked = !isLiked;
+        
+        Board entity = boardService.selectDetail(id);
+        if (isLiked) {
+            entity.setBoard_likes(entity.getBoard_likes()+1);
+        } else {
+        	entity.setBoard_likes(entity.getBoard_likes()-1);
+        }
+        
+        boardService.save(entity);
 
+        return isLiked ? "성공" : "실패";
+    }
 	
 
 }
