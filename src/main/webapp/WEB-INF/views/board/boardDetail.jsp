@@ -34,9 +34,11 @@
 		</div>
 		<c:if test="${not empty sessionScope.loginUser.useremail}">
 			<div id="likes">
-				<button onclick="boardLikes(${requestScope.boardDetail.board_id})">❤️</button>
+				<button onclick="boardLikes(${requestScope.boardDetail.board_id},'${sessionScope.loginUser.useremail}')">❤️</button>
 				<span id="likeCount">${requestScope.boardDetail.board_likes}</span>
-				<span id="likeStatus">좋아요</span>
+				<span id="likeStatus">
+					${requestScope.likeStatus}
+				</span>
 			</div>
 		</c:if>
 		<div>

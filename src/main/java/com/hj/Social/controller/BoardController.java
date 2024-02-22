@@ -2,10 +2,12 @@ package com.hj.Social.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,19 +19,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.hj.Social.domain.LikesId;
 import com.hj.Social.domain.PageRequestDTO;
 import com.hj.Social.domain.PageResultDTO;
 import com.hj.Social.entity.Board;
+import com.hj.Social.entity.Likes;
+import com.hj.Social.entity.User;
 import com.hj.Social.service.BoardService;
+import com.hj.Social.service.LikesService;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @AllArgsConstructor
+@Log4j2
 @RequestMapping(value = "/board")
 @Controller
 public class BoardController {
 
 	private BoardService boardService;
+	private LikesService likesService;
 	
 
 	@GetMapping("/")
@@ -48,17 +57,29 @@ public class BoardController {
 	}
 	
 	@GetMapping(value ="/{board_id}")
-	public String getBoardDetail(HttpServletRequest request, Model model, @PathVariable("board_id") int id) {
+	public String getBoardDetail(HttpServletRequest request, Model model, @PathVariable("board_id") int id, HttpSession session) {
 		
 		Board entity = boardService.selectDetail(id);
 		
-		if ( "U".equals(request.getParameter("jCode")) ) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		LikesId likeId = new LikesId(loginUser.getUseremail(),id);
+		
+		if(likesService.selectDetail(likeId) != null) {
+			model.addAttribute("likeStatus","좋아요 취소");
+		}else {
+			model.addAttribute("likeStatus","좋아요");
+		}
+		
+		if ("U".equals(request.getParameter("jCode")) ) {
+			
 			model.addAttribute("boardDetail", entity);
+			
 			return "board/boardUpdate";
 		}else {
 			entity.setBoard_views(entity.getBoard_views()+1);
 			boardService.save(entity);
 			model.addAttribute("boardDetail", entity);
+			
 			return "board/boardDetail";
 		}
 	}
@@ -141,24 +162,36 @@ public class BoardController {
 	
     // LIKES
 	
-	private boolean isLiked = false;
-	
 	@PostMapping("/like")
 	@ResponseBody
-    public String toggleLike(@RequestBody int id) {
-        isLiked = !isLiked;
-        
-        Board entity = boardService.selectDetail(id);
-        if (isLiked) {
-            entity.setBoard_likes(entity.getBoard_likes()+1);
-        } else {
-        	entity.setBoard_likes(entity.getBoard_likes()-1);
-        }
-        
-        boardService.save(entity);
+    public Map<String, Object> toggleLike(@RequestBody Likes entity, Model model) {
+		
+		System.out.println("*******************"+entity);
+		LikesId id = new LikesId(entity.getUseremail(),entity.getBoard_id());
+		
+		Board boardEntity = boardService.selectDetail(entity.getBoard_id());
 
-        return isLiked ? "성공" : "실패";
-    }
+		Map<String,Object> result = new HashMap<String,Object>();
+		
+		if(likesService.selectDetail(id) == null) {
+			boardEntity.setBoard_likes(boardEntity.getBoard_likes()+1);
+			likesService.save(entity);
+			
+			result.put("likeStatus", true);
+			
+		}else {
+			boardEntity.setBoard_likes(boardEntity.getBoard_likes()-1);
+			likesService.delete(id);
+			
+			result.put("likeState", false);
+		}
+
+		boardService.save(boardEntity);
+		
+		result.put("board_likes",boardEntity.getBoard_likes());
+		
+		return result;
 	
+    }
 
 }

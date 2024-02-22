@@ -1,3 +1,15 @@
+
+/*window.onload = function() {
+	axios.get('https://jsonplaceholder.typicode.com/posts/1')
+		.then(function(response) {
+						
+		})
+		.catch(function(error) {
+			console.error('데이터를 가져오는 중 오류 발생:', error);
+		});
+};*/
+
+
 function boardDelete(id) {
    let url = "/board/delete";
 
@@ -28,22 +40,24 @@ function boardDelete(id) {
    }
 }
 
-function boardLikes(id) {
-   let url = "/board/likes";
+function boardLikes(board_id, useremail) {
+   let url = "/board/like";
 
-   if (confirm("삭제하시겠습니까?")) {
-      axios.post(url, id,
-      { headers: { 'Content-Type': 'application/json' }}
+      axios.post(url, { useremail : useremail,
+      					board_id : parseInt(board_id)
+      },{ headers: { 'Content-Type': 'application/json' }}
+  
       ).then(response => {
-      	
-      	if (!response.data) {
-            document.getElementById("likeStatus").innerHTML = "좋아요";
-         } else {
-         	document.getElementById("likeStatus").innerHTML = "좋아요 취소";
-            window.location.href = "/board/" + id;
-         }
       
-         alert("삭제되었습니다.");
+      	let res = response.data;
+      	
+      	if(res.likeStatus){
+			document.getElementById('likeStatus').innerText = "좋아요 취소";
+      	}else{
+      		document.getElementById('likeStatus').innerText = "좋아요";
+      	}
+      
+       document.getElementById('likeCount').innerText = res.board_likes;
          
       }).catch(err => {
          if (err.response && err.response.status === 502) {
@@ -52,7 +66,6 @@ function boardLikes(id) {
             alert("[시스템 오류]" + err.message);
          }
       });
-   } else {
-      alert("취소되었습니다.");
-   }
+
 }
+
