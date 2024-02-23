@@ -23,9 +23,11 @@ import com.hj.Social.domain.LikesId;
 import com.hj.Social.domain.PageRequestDTO;
 import com.hj.Social.domain.PageResultDTO;
 import com.hj.Social.entity.Board;
+import com.hj.Social.entity.Comments;
 import com.hj.Social.entity.Likes;
 import com.hj.Social.entity.User;
 import com.hj.Social.service.BoardService;
+import com.hj.Social.service.CommentsService;
 import com.hj.Social.service.LikesService;
 
 import lombok.AllArgsConstructor;
@@ -39,8 +41,9 @@ public class BoardController {
 
 	private BoardService boardService;
 	private LikesService likesService;
+	private CommentsService commService;
 	
-
+	
 	@GetMapping("/")
 	public String getBoardList(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "searchType", defaultValue = "") String searchType,
@@ -57,7 +60,8 @@ public class BoardController {
 	}
 	
 	@GetMapping(value ="/{board_id}")
-	public String getBoardDetail(HttpServletRequest request, Model model, @PathVariable("board_id") int id, HttpSession session) {
+	public String getBoardDetail(HttpServletRequest request, Model model, @PathVariable("board_id") int id, 
+			HttpSession session, @RequestParam(value = "page", defaultValue = "1") int page) {
 		
 		Board entity = boardService.selectDetail(id);
 		
@@ -79,6 +83,12 @@ public class BoardController {
 			entity.setBoard_views(entity.getBoard_views()+1);
 			boardService.save(entity);
 			model.addAttribute("boardDetail", entity);
+			
+			PageRequestDTO requestDTO = PageRequestDTO.builder().page(page).size(1).build();
+			PageResultDTO<Comments> resultDTO = commService.selectList(requestDTO,id);
+
+			model.addAttribute("commentList", resultDTO.getEntityList());
+			model.addAttribute("resultDTO", resultDTO);
 			
 			return "board/boardDetail";
 		}
@@ -193,5 +203,25 @@ public class BoardController {
 		return result;
 	
     }
-
+	
+	
+	// 댓글 기능
+	
+	@PostMapping(value = "/commentInsert")
+	public String postCommentInsert(RedirectAttributes rttr, Comments entity) {
+		
+		try {
+			entity.setComment_regdate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			entity.setComment_delyn("N");
+			commService.save(entity);
+		} catch (Exception e) {
+			System.out.println("comment Insert Exception" + e.toString());			
+		}
+		
+		return "redirect:/board/"+entity.getBoard_id();
+		
+	}
+	
+	
+	
 }
