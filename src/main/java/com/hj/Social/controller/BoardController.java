@@ -8,8 +8,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,13 +64,20 @@ public class BoardController {
 	}
 	
 	@GetMapping(value ="/{board_id}")
-	public String getBoardDetail(HttpServletRequest request, Model model, @PathVariable("board_id") int id, 
-			HttpSession session, @RequestParam(value = "page", defaultValue = "1") int page) {
+	public String getBoardDetail(HttpServletRequest request, Model model, @PathVariable("board_id") int id,
+			HttpSession session) {
 		
 		Board entity = boardService.selectDetail(id);
 		
+		System.out.println("***************BoardEntity" + entity);
+		
 		User loginUser = (User) session.getAttribute("loginUser");
 		LikesId likeId = new LikesId(loginUser.getUseremail(),id);
+		
+		PageResultDTO<Comments> resultDTO = getCommentList(id,1);
+		
+		model.addAttribute("commentList", resultDTO.getEntityList());
+		model.addAttribute("resultDTO", resultDTO);
 		
 		if(likesService.selectDetail(likeId) != null) {
 			model.addAttribute("likeStatus","좋아요 취소");
@@ -84,14 +95,20 @@ public class BoardController {
 			boardService.save(entity);
 			model.addAttribute("boardDetail", entity);
 			
-			PageRequestDTO requestDTO = PageRequestDTO.builder().page(page).size(1).build();
-			PageResultDTO<Comments> resultDTO = commService.selectList(requestDTO,id);
-
-			model.addAttribute("commentList", resultDTO.getEntityList());
-			model.addAttribute("resultDTO", resultDTO);
-			
 			return "board/boardDetail";
 		}
+	}
+	
+	@ResponseBody
+	@GetMapping(value ="/commentList")
+	public PageResultDTO<Comments> getCommentList(@RequestParam("board_id") int id, 
+									@RequestParam(value = "page", defaultValue = "1") int page) {
+		
+		PageRequestDTO requestDTO = PageRequestDTO.builder().page(page).size(3).build();
+		PageResultDTO<Comments> resultDTO = commService.selectList(requestDTO,id);
+		
+		return resultDTO;
+
 	}
 	
 	@GetMapping(value = "/boardInsert")
@@ -130,7 +147,7 @@ public class BoardController {
 			entity.setBoard_moddate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 			if(boardService.save(entity) != null) {
 				model.addAttribute("boardDetail", entity);
-				uri = "board/boardDetail";
+				uri = "redirect:/board/"+entity.getBoard_id();
 			}else {
 				model.addAttribute("message","글 수정 실패");
 			}
@@ -171,7 +188,6 @@ public class BoardController {
 
 	
     // LIKES
-	
 	@PostMapping("/like")
 	@ResponseBody
     public Map<String, Object> toggleLike(@RequestBody Likes entity, Model model) {
@@ -206,7 +222,6 @@ public class BoardController {
 	
 	
 	// 댓글 기능
-	
 	@PostMapping(value = "/commentInsert")
 	public String postCommentInsert(RedirectAttributes rttr, Comments entity) {
 		
@@ -223,5 +238,48 @@ public class BoardController {
 	}
 	
 	
+	@DeleteMapping("/deleteComment")
+	public ResponseEntity<?> deleteComment(@RequestParam("comment_id")int comment_id ) {
+		
+		Comments entity = commService.selectDetail(comment_id);
+		try {
+			
+			entity.setComment_deldate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			entity.setComment_delyn("Y");
+			commService.save(entity);
+			
+			return ResponseEntity.ok().build();
+			
+		} catch (Exception e) {
+			System.out.println("comment delete Exception" + e.toString());			
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
+		}
+		
+		
+	}
 	
+	
+	@PostMapping(value = "/updateComments")
+	@ResponseBody
+    public String updateComments(@RequestParam("comment_id") int comment_id, @RequestParam("comment_content") String comment_content, HttpSession session, Model model) {
+        try {
+
+            Comments comment = commService.selectDetail(comment_id);
+            if (comment != null) {
+            	 comment.setComment_content(comment_content);
+                 comment.setComment_moddate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+                 commService.save(comment); 
+                return "Success";
+            } else {
+                return "Fail";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("댓글 업데이트 중에 오류 발생: " + e.getMessage());
+            model.addAttribute("error", "댓글 업데이트에 실패했습니다.");
+            return "Error";
+        }
+    }
+	    
 }

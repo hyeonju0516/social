@@ -1,0 +1,86 @@
+a, button{
+	cursor:pointer;
+}
+
+body {
+    margin: 0;
+    padding:0;
+}
+
+#wrap {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border:1px solid #2E8B57;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #006400;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #3CB371;
+}
+
+button {
+    background-color: #2E8B57;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #006400;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#board_content{
+	white-space:pre-wrap;
+	max-height:300px;
+	min-height:300px;
+	overflow-y:auto;
+}
+
+#comments {
+    margin-top: 20px;
+}
+
+#commentList {
+    margin-top: 10px;
+}
+
+.comment_content {
+    width: 90%;
+}
+
+.pageNation {
+    margin-top: 20px;
+}
+
+.selectPage, .selectArrow {
+    cursor:auto;
+	pointer-events: none;
+}
+
+.selectPage{
+	padding: 5px 10px;
+	border-radius: 5px;
+	background-color: #2E8B57;
+	color:#fff;
+}

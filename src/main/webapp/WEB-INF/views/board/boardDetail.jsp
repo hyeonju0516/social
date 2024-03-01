@@ -8,6 +8,7 @@
 <title>게시글 상세보기</title>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="/resources/js/board.js"></script>
+<link rel="stylesheet" href="/resources/css/board.css">
 </head>
 <body>
 	<div id="wrap">
@@ -28,7 +29,7 @@
 					<td>${requestScope.boardDetail.board_views}</td>
 				</tr>
 				<tr>
-					<td colspan="6">${requestScope.boardDetail.board_content}</td>
+					<td colspan="6" id="board_content">${requestScope.boardDetail.board_content}</td>
 				</tr>
 			</table>
 		</div>
@@ -62,63 +63,60 @@
 					</div>
 				</form>
 			</div>
-			<div>
-				<table border="1px">
-					<tbody>
+			<div id="commentList">
+				<table>
+					<tr>
+						<th>번호</th>
+						<th>작성자</th>
+						<th>댓글내용</th>
+						<th>등록일</th>
+						<th>수정</th>
+						<th>삭제</th>
+					</tr>
+
+					<c:if test="${not empty requestScope.commentList}">
+						<c:forEach var="c" items="${requestScope.commentList}">
+
 							<tr>
-								<th>닉네임</th>
-								<th>리뷰내용</th>
-								<th>작성일</th>
-							</tr>
-							<c:forEach items="${requestScope.commentList}" var="c">
-								<tr>
-									<td><input type="hidden" id="comment_id" value="${c.comment_id}">
-									${c.useremail}</td>
-									<td><input class="comment_content"  type="text" value="${c.comment_content}"  autofocus disabled></td>
+								<td>${c.comment_id}</td>
+								<td>${c.useremail}</td>
+								<td><span class="comment-content">${c.comment_content}</span>
+									<input type="text" class="edit-comment" style="display: none;"
+									value="${c.comment_content}"></td>
+								<td>${c.comment_regdate}</td>
+								<c:if test="${sessionScope.loginUser.useremail == c.useremail}">
 									<td>
-										<c:if test="${loginUser.useremail eq c.useremail }">
-												<input type="button" data-idx="${c.comment_id}" value="수정">
-												<input type="button" data-idx="${c.comment_id}" value="삭제" >
-										</c:if>
-										<br><label>${c.comment_regdate}</label>
+										<button data-idx="${c.comment_id}" class="edit-btn">수정</button>
 									</td>
-								</tr>
-							</c:forEach>
-					</tbody>
+									<td>
+										<button type="button" data-idx="${c.comment_id}" onclick="commentDelete(${c.comment_id})">삭제</button>
+									</td>
+								</c:if>
+							</tr>
+
+						</c:forEach>
+					</c:if>
+
+					<c:if test="${empty requestScope.commentList}">
+						<tr>
+							<td colspan="6">작성된 댓글이 없습니다.</td>
+						</tr>
+					</c:if>
 				</table>
-				<div class="pageNation">
-			        <c:choose>
-			             <c:when test="${resultDTO.start != resultDTO.page}">
-			                  <a class ="firstB" href="/board/${requestScope.boardDetail.board_id}?page=${resultDTO.start}">처음</a>
-			                  <a class ="ltB" href="/board/${requestScope.boardDetail.board_id}?page=${resultDTO.page-1}">&LT;</a>
-			             </c:when>
-			             <c:otherwise>
-			                  <span class ="firstB">처음</span>
-			                  <span class ="ltB">&LT;</span>
-			             </c:otherwise>
-			         </c:choose>     
-			              
-			         <c:forEach var="i" items="${resultDTO.pageList}">
-			             <c:if test="${i==resultDTO.page}">
-			                 <span><strong>${i}</strong></span>&nbsp;
-			             </c:if>
-			             <c:if test="${i!=resultDTO.page}">
-			                 <a href="/board/${requestScope.boardDetail.board_id}?page=${i}">${i}</a>&nbsp;
-			             </c:if>
-			         </c:forEach>
-			                
-			         <c:choose>
-			             <c:when test="${resultDTO.end != resultDTO.page}">
-			                 <a class="gtB" href="/board/${requestScope.boardDetail.board_id}?page=${resultDTO.page+1}">&GT;</a>
-			                 <a class="lastB" href="/board/${requestScope.boardDetail.board_id}?page=${resultDTO.end}">마지막</a>
-			             </c:when>
-			             <c:otherwise>
-			                 <span class="gtB">&GT;</span>
-			                 <span class="lastB">마지막</span>
-			             </c:otherwise>
-			         </c:choose>
-			    </div>
 			</div>
+		    <div class="pageNation">
+                 <a id="firstB" class="selectArrow" onclick="loadItems(${resultDTO.start},${requestScope.boardDetail.board_id})">처음</a>
+                 <input type="hidden" id="templtB" value="${resultDTO.page-1}">
+                 <a id="ltB" class="selectArrow" onclick="loadItems(getInputValue('templtB'),${requestScope.boardDetail.board_id})">&LT;</a>
+		              
+		         <c:forEach var="i" items="${resultDTO.pageList}">
+	                 <a class="pageValue ${i==resultDTO.page ? 'selectPage' : null}" onclick="loadItems(${i},${requestScope.boardDetail.board_id})">${i}</a>&nbsp;
+		         </c:forEach>
+		                
+                 <input type="hidden" id="tempgtB" value="${resultDTO.page+1}">
+                 <a id="gtB" onclick="loadItems(getInputValue('tempgtB'), ${requestScope.boardDetail.board_id})">&GT;</a>
+                 <a id="lastB" onclick="loadItems(${resultDTO.end},${requestScope.boardDetail.board_id})">마지막</a>
+		    </div>
 		</div>
 		<hr>
 		<a href="/board/">전체목록</a>
