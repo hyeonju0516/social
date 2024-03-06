@@ -2,6 +2,9 @@ package com.hj.Social.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import com.hj.Social.domain.PageRequestDTO;
@@ -10,6 +13,7 @@ import com.hj.Social.entity.Comments;
 import com.hj.Social.entity.QComments;
 import com.hj.Social.repository.CommentsRepository;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.dml.UpdateClause;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -21,12 +25,14 @@ public class CommentsServiceImpl implements CommentsService {
 	private final QComments comments = QComments.comments;
 	private final CommentsRepository repository;
 	private final JPAQueryFactory queryFactory;
+	private final EntityManager entityManager;
 	
 	@Override
 	public PageResultDTO<Comments> selectList(PageRequestDTO requestDTO, int id){
 		QueryResults<Comments> result = queryFactory
 	            .selectFrom(comments)
 	            .where(comments.comment_delyn.eq("N").and(comments.board_id.eq(id)))
+	            .orderBy(comments.comment_root.asc(),comments.comment_steps.asc())
 	            .offset(requestDTO.getPageable().getOffset())
 	            .limit(requestDTO.getPageable().getPageSize())
 	            .fetchResults();
@@ -49,6 +55,21 @@ public class CommentsServiceImpl implements CommentsService {
 	public Comments save(Comments entity) {
 		return repository.save(entity);
 	}
+	
+	@Override
+	@Transactional
+	public void stepUpdate(Comments entity) {
+		UpdateClause update = queryFactory.update(comments)
+			    .set(comments.comment_steps, comments.comment_steps.add(1))
+			    .where(
+			        comments.comment_root.eq(entity.getComment_root())
+			            .and(comments.comment_steps.goe(entity.getComment_steps()))
+			            .and(comments.comment_id.ne(entity.getComment_id()))
+			    );
+
+			update.execute();
+	}
+	
 	
 	@Override
 	public int delete(int id) {

@@ -2,16 +2,49 @@ a, button{
 	cursor:pointer;
 }
 
-body {
-    margin: 0;
-    padding:0;
+*{
+	margin:0;
+	padding:0;
 }
+
+ul,li{
+	list-style:none;
+}
+
+a{
+	color:#000;
+	text-decoration: none;
+}
+
+textarea{
+	resize:none;
+	outline:none;
+}
+
+
+@media all and (max-width:500px) {
+	
+	#wrap #commentList ul li{
+		flex-direction:column;
+		gap:10px;
+	}
+	
+	#wrap #commentList ul li div:first-child p{
+		display:block;
+	}
+	
+	body{
+		font-size:14px;
+	}
+	
+}
+
 
 #wrap {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    border:1px solid #2E8B57;
+    border:1px solid #5f7e46;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -19,11 +52,12 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    word-break:break-all;
+    margin-top:10px;
 }
 
 table, th, td {
-    border: 1px solid #006400;
+    border: 1px solid #5f7e46;
 }
 
 th, td {
@@ -32,22 +66,28 @@ th, td {
 }
 
 th {
-    background-color: #3CB371;
+    background-color: #afd88b;
 }
 
 button {
-    background-color: #2E8B57;
+    background-color: #afd88b;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
 }
 
 button:hover {
-    background-color: #006400;
+    background-color: #81ae5d;
 }
 
 a:hover {
     text-decoration: underline;
+}
+
+#wrap .topSection{
+	display:flex;
+	justify-content: space-between;
+	align-items:end;
 }
 
 #board_content{
@@ -57,20 +97,70 @@ a:hover {
 	overflow-y:auto;
 }
 
-#comments {
-    margin-top: 20px;
+.board_bar{
+	display:flex;
+	justify-content: space-between;
+	margin-top:10px;
 }
 
-#commentList {
-    margin-top: 10px;
+#comments .commentInsert{
+	background-color: #eee;
+	padding:10px;
+	margin-top: 15px;
 }
 
-.comment_content {
-    width: 90%;
+#comments .commentInsert textarea{
+	border:1px solid #000;
+	width: 100%;
+	height:100px;
+	outline:none;
+	padding:5px;
+	box-sizing:border-box;
+	margin-top:10px;
+
+}
+
+#commentList li {
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 10px;
+    position: relative;
+}
+
+#commentList ul li div:first-child span{
+	color:#aaa;
+	font-size:12px;
+}
+
+#commentList ul li div:first-child p{
+	display:inline-block;
+}
+
+#commentList ul li div:nth-child(2) p,
+#commentList ul li div:nth-child(2) textarea{
+	margin:10px 0;
+}
+
+#commentList ul li div:nth-child(3){
+	display:flex;
+	justify-content: space-between;
+	align-items:center;
+}
+
+#commentList .edit-comment {
+    width: 100%;
+}
+
+#commentList .edit-btn, #commentList .del-btn {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    color: #333;
 }
 
 .pageNation {
     margin-top: 20px;
+    text-align:center;
 }
 
 .selectPage, .selectArrow {
@@ -81,6 +171,6 @@ a:hover {
 .selectPage{
 	padding: 5px 10px;
 	border-radius: 5px;
-	background-color: #2E8B57;
+	background-color: #81ae5d;
 	color:#fff;
 }

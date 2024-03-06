@@ -1,12 +1,32 @@
 @charset "UTF-8";
 
+a{
+	color:#000;
+	text-decoration: none;
+}
+
+a:hover{
+	color:#5f7e46;
+	font-weight:bold;
+}
+
 #wrap{
 	width:300px;
-	margin:0 auto;
+	margin:20px auto;
 	text-align:center;
 }
 
-#wrap p{
+#wrap .mainImg img{
+	width:100%;
+	height:auto;
+	display:block;
+}
+
+#wrap div:nth-child(2){
+	margin-top:20px;
+}
+
+#wrap div:nth-child(2) p{
 	margin:20px 0;
 }
 

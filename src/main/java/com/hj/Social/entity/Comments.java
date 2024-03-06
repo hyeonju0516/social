@@ -48,5 +48,8 @@ public class Comments {
 	
 	@Column(nullable = false)
 	private int comment_steps;
+	
+	@Column(nullable = false)
+	private int comment_indent;
 
 }

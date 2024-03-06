@@ -66,17 +66,10 @@ function loadItems(page, board_id) {
 		.then(function(response) {
 
 			let data = response.data;
+			console.log(data);
 
 			let resultHtml = `
-		          <table border="1px">
-		              <tr>
-		                <th>번호</th>
-						<th>작성자</th>
-						<th>댓글내용</th>
-						<th>등록일</th>
-						<th>수정</th>
-						<th>삭제</th>
-		              </tr>
+		          <ul>
         `;
 
 			let useremail = document.getElementById('useremail').value;
@@ -84,39 +77,69 @@ function loadItems(page, board_id) {
 			if (data.entityList) {
 				data.entityList.forEach(function(c) {
 					resultHtml += `
-	              <tr>
-						<td>${c.comment_id}</td>
-						<td>${c.useremail}</td>
-						<td><span class="comment-content">${c.comment_content}</span>
-							<input type="text" class="edit-comment" style="display: none;"
-							value="${c.comment_content}"></td>
-						<td>${c.comment_regdate}</td>
+	              			<li style="margin-left:${c.comment_indent}rem;">
+	                        	<div>
+	                                <p>${c.useremail}</p>
+	                                <span>${c.comment_regdate}</span>
+                                </div>
+	                           	<div>
+	                                <p class="comment-content">${c.comment_content}</p>
+	                                <textarea class="edit-comment" style="display: none;">${c.comment_content}</textarea>
+                                </div>
+                                <div>
+                                	<a id="toggle-reply" onclick="toggleReply(${c.comment_id})">답글달기</a>
+
 					`;
 
 
 					if (useremail == c.useremail) {
 						resultHtml += `
-						<td>
-							<button data-idx="${c.comment_id}" class="edit-btn">수정</button>
-						</td>
-						<td>
-							<button type="button" data-idx="${c.comment_id}" onclick="commentDelete(${c.comment_id})">삭제</button>
-						</td>
+								<div>
+		                             <button data-idx="${c.comment_id}" class="edit-btn" onclick="commentUpdate(this)">수정</button>
+		                             <button class="del-btn" type="button" data-idx="${c.comment_id}" onclick="commentDelete(${c.comment_id})">삭제</button>
+		                        </div>
+	                        </div>
+	                        <div id="reply-${c.comment_id}" style="display: none;">
+                            	<form action="ReplyInsert" method="post">
+									<span>${useremail}</span>
+									<input type="hidden" id="board_id" name="board_id" value="${c.board_id}" />
+									<input type="hidden" id="useremail" name="useremail" value="${useremail}" />
+									<input type="hidden" id="comment_root" name="comment_root" value="${c.comment_id}" />
+									<input type="hidden" id="comment_steps" name="comment_steps" value="${c.comment_steps}" />
+									<input type="hidden" id="comment_indent" name="comment_indent" value="${c.comment_indent}" />
+									<textarea id="comment_content" name="comment_content" placeholder="댓글을 입력해 주세요." maxlength="1000" required ></textarea>
+									<button>등록</button>
+								</form>
+							</div>
+	                    </li>
+						`;
+					}else{
+						resultHtml += `
+							</div>
+							<div id="reply-${c.comment_id}" style="display: none;">
+                                	<form action="ReplyInsert" method="post">
+										<span>${useremail}</span>
+										<input type="hidden" id="board_id" name="board_id" value="${c.board_id}" />
+										<input type="hidden" id="useremail" name="useremail" value="${useremail}" />
+										<input type="hidden" id="comment_root" name="comment_root" value="${c.comment_id}" />
+										<input type="hidden" id="comment_steps" name="comment_steps" value="${c.comment_steps}" />
+										<input type="hidden" id="comment_indent" name="comment_indent" value="${c.comment_indent}" />
+										<input type="text" id="comment_content" name="comment_content" placeholder="댓글을 입력해 주세요." maxlength="1000" required />
+										<button>등록</button>
+									</form>
+								</div>
+							</li>
+						</ul>
 						`;
 					}
 				});
 
 			} else {
 				resultHtml += `
-        	<tr>
-                <td colspan="6">작성된 댓글이 없습니다.</td>
-			`;
+        			<div>작성된 댓글이 없습니다.<div>
+				`;
 			}
 
-			resultHtml += `
-				</tr>
-	            </table>
-          `;
 
 			document.getElementById('commentList').innerHTML = resultHtml;
 
@@ -207,49 +230,49 @@ function toggleLike(board_id, useremail) {
 		});
 }
 
-
 // 댓글 수정
-document.addEventListener('DOMContentLoaded', function () {
-    let editButtons = document.querySelectorAll('.edit-btn');
+function commentUpdate(button) {
 
-    editButtons.forEach(function (button) {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
+    let row = button.closest('li');
+    let commentContentSpan = row.querySelector('.comment-content');
+    let editCommentInput = row.querySelector('.edit-comment');
 
-            let row = button.closest('tr');
-            let commentContentSpan = row.querySelector('.comment-content');
-            let editCommentInput = row.querySelector('.edit-comment');
-            
-            if (button.classList.contains('update-btn')) {
-                let updatedComment = editCommentInput.value;
-                commentContentSpan.textContent = updatedComment;
-                commentContentSpan.style.display = 'inline';
-                editCommentInput.style.display = 'none';
-                button.textContent = '수정';
-                button.classList.remove('update-btn');
+    if (button.classList.contains('update-btn')) {
+        let updatedComment = editCommentInput.value;
+        commentContentSpan.textContent = updatedComment;
+        commentContentSpan.style.display = 'block';
+        editCommentInput.style.display = 'none';
+        row.querySelector('.del-btn').style.display = "inline-block";
+        button.textContent = '수정';
+        button.classList.remove('update-btn');
 
-                let commentId = button.getAttribute('data-idx');
-                updateCommentOnServer(commentId, updatedComment);
-            } else {
-                commentContentSpan.style.display = 'none';
-                editCommentInput.style.display = 'block';
-                button.textContent = '수정 완료';
-                button.classList.add('update-btn');
-            }
-            
+        let commentId = button.getAttribute('data-idx');
+        updateCommentOnServer(commentId, updatedComment);
+    } else {
+        commentContentSpan.style.display = 'none';
+        editCommentInput.style.display = 'block';
+        button.textContent = '수정 완료';
+        button.classList.add('update-btn');
 
+        row.querySelector('.del-btn').style.display = "none";
+    }
+}
+
+function updateCommentOnServer(commentId, updatedComment) {
+    let url = `/board/updateComments?comment_id=${commentId}&comment_content=${updatedComment}`;
+
+    axios.post(url)
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error('Error updating comment:', error);
         });
-    });
+}
 
-    function updateCommentOnServer(commentId, updatedComment) {
-	    let url = `/board/updateComments?comment_id=${commentId}&comment_content=${updatedComment}`;
 
-	    axios.post(url)
-	        .then(response => {
-	            console.log(response.data);
-	        })
-	        .catch(error => {
-	            console.error('Error updating comment:', error);
-	        });
-		}
-});
+// 답글 기능
+function toggleReply(comment_id) {
+    const replyContainer = document.getElementById(`reply-${comment_id}`);
+    replyContainer.style.display = (replyContainer.style.display === 'none') ? 'block' : 'none';
+}

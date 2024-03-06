@@ -2,6 +2,8 @@ server:
   port: 8080
   servlet:
     context-path: /
+    session:
+      timeout: 0
   tomcat:
     uri-encoding: UTF-8
 

@@ -11,5 +11,6 @@ public interface CommentsService {
 	PageResultDTO<Comments> selectList(PageRequestDTO requestDTO, int id);
 	Comments selectDetail(int id);
 	Comments save(Comments entity);
+	void stepUpdate(Comments entity);
 	int delete(int id);
 }

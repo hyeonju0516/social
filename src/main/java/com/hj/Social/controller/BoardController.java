@@ -104,7 +104,7 @@ public class BoardController {
 	public PageResultDTO<Comments> getCommentList(@RequestParam("board_id") int id, 
 									@RequestParam(value = "page", defaultValue = "1") int page) {
 		
-		PageRequestDTO requestDTO = PageRequestDTO.builder().page(page).size(3).build();
+		PageRequestDTO requestDTO = PageRequestDTO.builder().page(page).size(10).build();
 		PageResultDTO<Comments> resultDTO = commService.selectList(requestDTO,id);
 		
 		return resultDTO;
@@ -228,13 +228,37 @@ public class BoardController {
 		try {
 			entity.setComment_regdate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 			entity.setComment_delyn("N");
+			entity = commService.save(entity);
+			
+			entity.setComment_root(entity.getComment_id());
 			commService.save(entity);
 		} catch (Exception e) {
 			System.out.println("comment Insert Exception" + e.toString());			
 		}
 		
 		return "redirect:/board/"+entity.getBoard_id();
+	}
+	
+	@PostMapping(value = "/ReplyInsert")
+	public String postReplyInsert(RedirectAttributes rttr, Comments entity) {
 		
+		try {
+			entity.setComment_regdate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+			entity.setComment_delyn("N");
+			
+			Comments parents = commService.selectDetail(entity.getComment_root());
+			entity.setComment_root(parents.getComment_root());
+			entity.setComment_steps(entity.getComment_steps()+1);
+			entity.setComment_indent(entity.getComment_indent()+1);
+			commService.save(entity);
+			System.out.println("****************"+entity);
+			commService.stepUpdate(entity);
+			
+		} catch (Exception e) {
+			System.out.println("comment Insert Exception" + e.toString());			
+		}
+		
+		return "redirect:/board/"+entity.getBoard_id();
 	}
 	
 	

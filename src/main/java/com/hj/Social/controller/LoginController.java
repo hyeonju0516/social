@@ -38,7 +38,7 @@ public class LoginController {
 
 			if (userInfo != null) {
 				session.setAttribute("loginUser", userInfo);
-				return "redirect:/home";
+				return "redirect:/index";
 			} else {
 				return "redirect:/social/loginPage";
 			}
@@ -62,7 +62,7 @@ public class LoginController {
 
 			if (userInfo != null) {
 				session.setAttribute("loginUser", userInfo);
-				return "redirect:/home";
+				return "redirect:/index";
 			} else {
 				return "redirect:/social/loginPage";
 			}
@@ -86,7 +86,7 @@ public class LoginController {
 
 			if (userInfo != null) {
 				session.setAttribute("loginUser", userInfo);
-				return "redirect:/home";
+				return "redirect:/index";
 			} else {
 				return "redirect:/social/loginPage";
 			}
@@ -103,7 +103,7 @@ public class LoginController {
 		
 		session.invalidate();
 		
-		return "redirect:/home";
+		return "redirect:/index";
 	}
 
 }
