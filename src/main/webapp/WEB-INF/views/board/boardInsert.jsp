@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>새 글 등록</title>
+<link rel="stylesheet" href="/resources/css/board.css">
 </head>
 <body>
 	<div id="wrap">

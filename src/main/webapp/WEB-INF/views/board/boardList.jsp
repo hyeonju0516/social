@@ -9,20 +9,21 @@
 <script>
 	history.replaceState({}, null, location.pathname);
 </script>
+<script src="/resources/js/board.js"></script>
 <link rel="stylesheet" href="/resources/css/board.css">
 </head>
 <body>
 <div id="wrap">
    <div class="topSection">
    		<div class="searchBox">
-			<form action="board/" method="get">
+			<form action="/board/" method="get">
 			    <select name="searchType" id="searchType" onchange="keywordClear()">
 			        <option value="all" ${requestScope.searchType == 'all' ? "selected" : "" }>전체</option>
 			        <option value="useremail" ${requestScope.searchType == 'useremail' ? "selected" : "" }>글쓴이</option>
 			        <option value="board_title" ${requestScope.searchType == 'board_title' ? "selected" : "" }>글제목</option>
 			        <option value="board_content" ${requestScope.searchType == 'board_content' ? "selected" : "" }>글내용</option>
 			    </select>
-			    <input type="text" name="keyword" id="keyword" placeholder="검색어를 입력하세요." value="${requestScope.keyword}" />
+			    <input type="text" name="keyword" id="keyword" value="${requestScope.keyword}" readonly style="background-color:#eee" />
 			    <button type="submit" id="searchBtn">Search</button>
 			</form>
 		</div>

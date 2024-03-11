@@ -1,4 +1,18 @@
+function keywordClear() {
+    let searchTypeSelect = document.getElementById("searchType");
+    let keywordInput = document.getElementById("keyword");
 
+	if (searchTypeSelect.value === "all") {
+        keywordInput.value = "";
+        keywordInput.readOnly = true;
+        keywordInput.style.backgroundColor = "#eee";
+    } else {
+        // 다른 값이 선택되면 readonly 속성을 제거
+        keywordInput.readOnly = false;
+        keywordInput.style.backgroundColor = "#fff";
+    }
+}
+      
 function boardDelete(id) {
 	let url = "/board/delete";
 

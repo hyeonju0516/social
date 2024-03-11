@@ -1,6 +1,5 @@
 server:
   port: 8080
-  address: hjsocial.com
   servlet:
     context-path: /
     session:

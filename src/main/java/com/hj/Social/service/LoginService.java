@@ -27,7 +27,6 @@ public class LoginService {
 
 	private final UserRepository repository;
 
-	@CacheEvict(value = "first", allEntries = true)
 	public String getAccessToken(String code, String gate) {
 
 		try {
@@ -109,10 +108,8 @@ public class LoginService {
 
 	}
 
-	@CacheEvict(value = "first", allEntries = true)
 	public User getUserInfo(String accessToken, String gate) throws IOException {
-
-		// 네이버 로그인 접근 토큰;
+		
 		String apiURL = "";
 
 		if ("naver".equals(gate)) {
@@ -174,7 +171,6 @@ public class LoginService {
 
 	}
 
-	@CacheEvict(value = "first", allEntries = true)
 	private String requestToServer(String apiURL, String headerStr) throws IOException {
 		URL url = new URL(apiURL);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();

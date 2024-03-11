@@ -21,6 +21,10 @@ textarea{
 	outline:none;
 }
 
+input,select{
+	outline:none;
+}
+
 
 @media all and (max-width:500px) {
 	
@@ -88,6 +92,19 @@ a:hover {
 	display:flex;
 	justify-content: space-between;
 	align-items:end;
+}
+
+#wrap .searchBox select,
+#wrap .searchBox input{
+	border:1px solid #000;
+}
+
+#wrap .searchBox select{
+	padding:3px;
+}
+
+#wrap .searchBox input{
+	padding:4px;
 }
 
 #board_content{
