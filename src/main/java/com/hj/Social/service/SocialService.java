@@ -37,7 +37,7 @@ public class SocialService {
 			String apiURL = "";
 
 			if ("naver".equals(gate)) {
-				redirectURI = URLEncoder.encode("http://localhost:8080/social/nlogin", "UTF-8");
+				redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/nlogin", "UTF-8");
 				log.info("제발!!!!!!!!!!!!!!네이버 " + redirectURI);
 	            apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code";
 	            apiURL += "&client_id=" + "CbugVe_4UtXLAGCPR_KK";
@@ -45,7 +45,7 @@ public class SocialService {
 	            apiURL += "&redirect_uri=" + redirectURI;
 	            apiURL += "&code=" + code;
 	        } else if ("kakao".equals(gate)) {
-	            redirectURI = URLEncoder.encode("http://localhost:8080/social/klogin", "UTF-8");
+	            redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/klogin", "UTF-8");
 	            log.info("제발!!!!!!!!!!!!!!구글 " + redirectURI);
 	            apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
 	            apiURL += "&client_id=0091e3579906d8421181b9f2d8d7657e";
@@ -53,7 +53,7 @@ public class SocialService {
 	            apiURL += "&client_secret=4HnX7dcLmeCLUddzAWlVKwcQu3jRYB3x";
 	            apiURL += "&code=" + code;
 	        } else if ("google".equals(gate)) {
-	            redirectURI = URLEncoder.encode("http://localhost:8080/social/glogin", "UTF-8");
+	            redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/glogin", "UTF-8");
 	            log.info("제발!!!!!!!!!!!!!!구글 " + redirectURI);
 	            apiURL = "https://oauth2.googleapis.com/token?grant_type=authorization_code";
 	            apiURL += "&client_id=995527437477-r10jn77e4tp2u0nhp7moaiusg4oo30gc.apps.googleusercontent.com";
