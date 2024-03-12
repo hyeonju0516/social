@@ -35,8 +35,8 @@ public class LoginService {
 			String apiURL = "";
 
 			if ("naver".equals(gate)) {
-	            redirectURI = "https://www.hjsocial.com/social/nlogin";
-	            redirectURI = URLEncoder.encode(redirectURI,"UTF-8");
+				redirectURI = "https://www.hjsocial.com/social/nlogin";
+				redirectURI = URLEncoder.encode(redirectURI, "UTF-8");
 	            apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code";
 	            apiURL += "&client_id=" + "CbugVe_4UtXLAGCPR_KK";
 	            apiURL += "&client_secret=" + "x5yB3pEFQS";
@@ -44,7 +44,7 @@ public class LoginService {
 	            apiURL += "&code=" + code;
 	        } else if ("kakao".equals(gate)) {
 	            redirectURI = "https://www.hjsocial.com/social/klogin";
-	            redirectURI = URLEncoder.encode(redirectURI,"UTF-8");
+	            redirectURI = URLEncoder.encode(redirectURI, "UTF-8");
 	            apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
 	            apiURL += "&client_id=0091e3579906d8421181b9f2d8d7657e";
 	            apiURL += "&redirect_uri=" + redirectURI;
@@ -52,7 +52,7 @@ public class LoginService {
 	            apiURL += "&code=" + code;
 	        } else if ("google".equals(gate)) {
 	            redirectURI = "https://www.hjsocial.com/social/glogin";
-	            redirectURI = URLEncoder.encode(redirectURI,"UTF-8");
+	            redirectURI = URLEncoder.encode(redirectURI, "UTF-8");
 	            apiURL = "https://oauth2.googleapis.com/token?grant_type=authorization_code";
 	            apiURL += "&client_id=995527437477-r10jn77e4tp2u0nhp7moaiusg4oo30gc.apps.googleusercontent.com";
 	            apiURL += "&redirect_uri=" + redirectURI;
