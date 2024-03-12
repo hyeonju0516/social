@@ -6,10 +6,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Optional;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
@@ -35,6 +35,7 @@ public class LoginService {
 			String apiURL = "";
 
 			if ("naver".equals(gate)) {
+				URLDecoder.decode("http://localhost:8080/social/nlogin","UTF-8");
 				redirectURI = "https://www.hjsocial.com/social/nlogin";
 				redirectURI = URLEncoder.encode(redirectURI, "UTF-8");
 	            apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code";
@@ -43,6 +44,7 @@ public class LoginService {
 	            apiURL += "&redirect_uri=" + redirectURI;
 	            apiURL += "&code=" + code;
 	        } else if ("kakao".equals(gate)) {
+	        	URLDecoder.decode("http://localhost:8080/social/klogin","UTF-8");
 	            redirectURI = "https://www.hjsocial.com/social/klogin";
 	            redirectURI = URLEncoder.encode(redirectURI, "UTF-8");
 	            apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
@@ -51,6 +53,7 @@ public class LoginService {
 	            apiURL += "&client_secret=4HnX7dcLmeCLUddzAWlVKwcQu3jRYB3x";
 	            apiURL += "&code=" + code;
 	        } else if ("google".equals(gate)) {
+	        	URLDecoder.decode("http://localhost:8080/social/glogin","UTF-8");
 	            redirectURI = "https://www.hjsocial.com/social/glogin";
 	            redirectURI = URLEncoder.encode(redirectURI, "UTF-8");
 	            apiURL = "https://oauth2.googleapis.com/token?grant_type=authorization_code";
