@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hj.Social.entity.User;
-import com.hj.Social.service.LoginService;
+import com.hj.Social.service.SocialService;
 
 import lombok.AllArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Controller
 public class LoginController {
 
-	private LoginService loginService;
+	private SocialService socialService;
 	
 
 	@GetMapping("/loginPage")
@@ -30,10 +30,10 @@ public class LoginController {
 	@GetMapping("/klogin")
 	public String klogin(@RequestParam("code") String code, HttpSession session) {
 		
-		String access_token = loginService.getAccessToken(code, "kakao");
+		String access_token = socialService.getAccessToken(code, "kakao");
 
 		try {
-			User userInfo = loginService.getUserInfo(access_token,"kakao");
+			User userInfo = socialService.getUserInfo(access_token,"kakao");
 			System.out.println("*****************"+userInfo);
 
 			if (userInfo != null) {
@@ -54,10 +54,10 @@ public class LoginController {
 	public String nlogin(@RequestParam("code") String code, Model model, HttpSession session) {
 		System.out.println(code);
 
-		String access_token = loginService.getAccessToken(code, "naver");
+		String access_token = socialService.getAccessToken(code, "naver");
 
 		try {
-			User userInfo = loginService.getUserInfo(access_token,"naver");
+			User userInfo = socialService.getUserInfo(access_token,"naver");
 			System.out.println("*****************"+userInfo);
 
 			if (userInfo != null) {
@@ -78,10 +78,10 @@ public class LoginController {
 	public String glogin(@RequestParam("code") String code, Model model, HttpSession session) {
 		System.out.println("코드정보"+code);
 
-		String access_token = loginService.getAccessToken(code, "google");
+		String access_token = socialService.getAccessToken(code, "google");
 
 		try {
-			User userInfo = loginService.getUserInfo(access_token,"google");
+			User userInfo = socialService.getUserInfo(access_token,"google");
 			System.out.println("*****************"+userInfo);
 
 			if (userInfo != null) {
