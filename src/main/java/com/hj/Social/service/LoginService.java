@@ -35,28 +35,27 @@ public class LoginService {
 			String apiURL = "";
 
 			if ("naver".equals(gate)) {
-				redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/nlogin", "UTF-8");
-				apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code";
-				apiURL += "&client_id=" + "CbugVe_4UtXLAGCPR_KK";
-				apiURL += "&client_secret=" + "x5yB3pEFQS";
-				apiURL += "&redirect_uri=" + "https://www.hjsocial.com/social/nlogin";
-				apiURL += "&code=" + code;
-			} else if ("kakao".equals(gate)) {
-				redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/klogin", "UTF-8");
-				apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
-				apiURL += "&client_id=0091e3579906d8421181b9f2d8d7657e";
-				apiURL += "&redirect_uri=https://www.hjsocial.com/social/klogin";
-				apiURL += "&client_secret=4HnX7dcLmeCLUddzAWlVKwcQu3jRYB3x";
-				apiURL += "&code=" + code;
-			} else if ("google".equals(gate)) {
-				redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/glogin", "UTF-8");
-				apiURL = "https://oauth2.googleapis.com/token?grant_type=authorization_code";
-				apiURL += "&client_id=995527437477-r10jn77e4tp2u0nhp7moaiusg4oo30gc.apps.googleusercontent.com";
-				apiURL += "&client_secret=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";
-				apiURL += "&redirect_uri=https://www.hjsocial.com/social/glogin";
-				apiURL += "&code=" + code;
-
-			}
+	            redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/nlogin", "UTF-8");
+	            apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code";
+	            apiURL += "&client_id=" + "CbugVe_4UtXLAGCPR_KK";
+	            apiURL += "&client_secret=" + "x5yB3pEFQS";
+	            apiURL += "&redirect_uri=" + redirectURI;
+	            apiURL += "&code=" + code;
+	        } else if ("kakao".equals(gate)) {
+	            redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/klogin", "UTF-8");
+	            apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
+	            apiURL += "&client_id=0091e3579906d8421181b9f2d8d7657e";
+	            apiURL += "&redirect_uri=" + redirectURI;
+	            apiURL += "&client_secret=4HnX7dcLmeCLUddzAWlVKwcQu3jRYB3x";
+	            apiURL += "&code=" + code;
+	        } else if ("google".equals(gate)) {
+	            redirectURI = URLEncoder.encode("https://www.hjsocial.com/social/glogin", "UTF-8");
+	            apiURL = "https://oauth2.googleapis.com/token?grant_type=authorization_code";
+	            apiURL += "&client_id=995527437477-r10jn77e4tp2u0nhp7moaiusg4oo30gc.apps.googleusercontent.com";
+	            apiURL += "&redirect_uri=" + redirectURI;
+	            apiURL += "&client_secret=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";
+	            apiURL += "&code=" + code;
+	        }
 
 			System.out.println("apiURL=" + apiURL);
 
