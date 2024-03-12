@@ -28,7 +28,7 @@ public class LoginController {
 	
 
 	@GetMapping("/klogin")
-	public String klogin(@RequestParam("code") String code,HttpSession session) {
+	public String klogin(@RequestParam("code") String code, HttpSession session) {
 		
 		String access_token = loginService.getAccessToken(code, "kakao");
 
