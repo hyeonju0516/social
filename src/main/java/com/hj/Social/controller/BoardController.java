@@ -125,7 +125,7 @@ public class BoardController {
 			entity.setBoard_regdate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 			entity.setBoard_delyn("N");
 			if(boardService.save(entity) != null) {
-				uri = "redirect:";
+				uri = "redirect:/board/";
 			}else {
 				rttr.addFlashAttribute("message","글 등록 실패");
 			}
