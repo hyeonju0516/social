@@ -53,6 +53,11 @@
    					</tr>
    				</c:forEach>
    			</c:if>
+   			<c:if test="${empty requestScope.boardList}">
+   				<tr>
+   					<td colspan="6" style="text-align:center">작성된 게시글이 없습니다.</td>
+   				</tr>
+   			</c:if>
    		</table>
    </div>
    <c:if test="${not empty requestScope.boardList}">

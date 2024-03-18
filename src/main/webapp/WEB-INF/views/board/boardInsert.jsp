@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div id="wrap">
-		<div>
+		<div class="board_save board_insert">
 			<form action="boardInsert" method="post">
 				<table>
 					<tr>
@@ -21,16 +21,19 @@
 					</tr>
 					<tr>
 						<th>글제목</th>
-						<td><input type="text" id="board_title" name="board_title" required></td>
+						<td><input type="text" id="board_title" name="board_title" maxlength="30" required></td>
 					</tr>
 					<tr>
 						<th>글 내용</th>
-						<td><textarea id="board_content" name="board_content" required></textarea></td>
+						<td><textarea id="board_content" name="board_content" maxlength="1000" required></textarea></td>
 					</tr>
 				</table>
 				<div>
-					<button type="reset">초기화</button>
-					<button type="submit">등록</button>
+					<a href="javascript:history.back()">이전페이지</a>
+					<div>
+						<button type="reset">초기화</button>
+						<button type="submit">등록</button>
+					</div>
 				</div>
 			</form>
 		</div>

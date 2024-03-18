@@ -164,8 +164,6 @@ public class BoardController {
 	@ResponseBody
 	public String deleteBoard(@RequestBody int id) {
 		
-		System.out.println(id);
-		
 		try {
 			
 			Board entity = boardService.selectDetail(id);
@@ -173,6 +171,8 @@ public class BoardController {
 				entity.setBoard_delyn("Y");
 				entity.setBoard_deldate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 				boardService.save(entity);
+				
+				commService.boardDelete(id);
 				
 				return "성공";
 			}else {

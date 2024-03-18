@@ -1,5 +1,7 @@
 package com.hj.Social.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -69,6 +71,21 @@ public class CommentsServiceImpl implements CommentsService {
 
 			update.execute();
 	}
+	
+	@Override
+	@Transactional
+	public int boardDelete(int id) {
+		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	    
+		long updatedCount = queryFactory.update(comments)
+	            .set(comments.comment_delyn, "Y")
+	            .set(comments.comment_deldate, now) 
+	            .where(comments.board_id.eq(id))
+	            .execute();
+		
+	    return (int)updatedCount;
+	}
+
 	
 	
 	@Override

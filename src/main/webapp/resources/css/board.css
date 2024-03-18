@@ -120,6 +120,27 @@ a:hover {
 	margin-top:10px;
 }
 
+.board_bar > div:last-child{
+	display:flex;
+	gap:5px;
+}
+
+.board_bar > div:last-child > a{
+	background-color: #afd88b;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size:14px;
+}
+
+.board_bar > div:last-child > a:hover{
+	text-decoration: none;
+	background-color: #81ae5d;
+}
+
+#comments{
+	margin-bottom:20px;
+}
+
 #comments .commentInsert{
 	background-color: #eee;
 	padding:10px;
@@ -175,6 +196,11 @@ a:hover {
     color: #333;
 }
 
+#commentList>div{
+	text-align:center;
+	padding:50px 0;
+}
+
 .pageNation {
     margin-top: 20px;
     text-align:center;
@@ -190,4 +216,37 @@ a:hover {
 	border-radius: 5px;
 	background-color: #81ae5d;
 	color:#fff;
+}
+
+
+/* board_insert */
+
+#wrap .board_save input{
+	height:30px;
+}
+
+#wrap .board_save input,
+#wrap .board_save textarea{
+	border:1px solid #000;
+	padding:5px;
+	box-sizing:border-box;
+	width:100%;
+}
+
+#wrap .board_insert form div{
+	margin-top:5px;
+	display:flex;
+	justify-content: space-between;
+	align-items: end;
+}
+
+#wrap .board_insert form div button:first-child {
+	margin-right:5px;
+}
+
+
+/* board_update */
+
+#wrap .board_update form div:last-child{
+	margin-top:10px;
 }

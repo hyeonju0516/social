@@ -18,7 +18,9 @@
 					<th>번호</th>
 					<td>${requestScope.boardDetail.board_id}</td>
 					<th>작성자</th>
-					<td>${requestScope.boardDetail.useremail}</td>
+					<td>${requestScope.boardDetail.useremail}
+						<input type="hidden" id="username" value="${sessionScope.loginUser.username }"/>
+					</td>
 					<th>등록일</th>
 					<td>${requestScope.boardDetail.board_regdate}</td>
 				</tr>
@@ -53,7 +55,7 @@
 		<div id="comments">
 			<div class="commentInsert">
 				<form action="commentInsert" method="post">
-					<p>${sessionScope.loginUser.useremail }</p>
+					<p>${sessionScope.loginUser.useremail} &#40;${sessionScope.loginUser.username}&#41;</p>
 					<input type="hidden" id="board_id" name="board_id" value="${requestScope.boardDetail.board_id }" />
 					<input type="hidden" id="useremail" name="useremail" value="${sessionScope.loginUser.useremail }" />
 					<textarea id="comment_content" name="comment_content" placeholder="댓글을 입력해 주세요." maxlength="1000" required ></textarea>
@@ -64,7 +66,7 @@
 	            <ul>   
 					<c:if test="${not empty requestScope.commentList}">
 		                <c:forEach var="c" items="${requestScope.commentList}">		                
-	                        <li style="margin-left:${c.comment_indent}rem;">
+							<li style="margin-left: ${c.comment_indent*5}%;">
 	                        	<div>
 	                                <p>${c.useremail}</p>
 	                                <span>${c.comment_regdate}</span>
@@ -84,24 +86,25 @@
                                 </div>
                                 <div class="commentInsert" id="reply-${c.comment_id}" style="display: none;">
                                 	<form action="ReplyInsert" method="post">
-										<p>${sessionScope.loginUser.useremail}</p>
+										<p>${sessionScope.loginUser.useremail} &#40;${sessionScope.loginUser.username}&#41;</p>
 										<input type="hidden" id="board_id" name="board_id" value="${c.board_id}" />
-										<input type="hidden" id="useremail" name="useremail" value="${sessionScope.loginUser.useremail }" />
+										<input type="hidden" id="useremail" name="useremail" value="${sessionScope.loginUser.useremail}" />
 										<input type="hidden" id="comment_root" name="comment_root" value="${c.comment_id}" />
 										<input type="hidden" id="comment_steps" name="comment_steps" value="${c.comment_steps}" />
 										<input type="hidden" id="comment_indent" name="comment_indent" value="${c.comment_indent}" />
 										<textarea id="comment_content" name="comment_content" placeholder="댓글을 입력해 주세요." maxlength="1000" required ></textarea>
 										<button>등록</button>
+										<button type="button" onclick="cancleComment(${c.comment_id})">취소</button>
 									</form>
 								</div>
 	                        </li>
 		                </c:forEach>
-		            </ul>
-		        </c:if>
+		        	</c:if>
+	            </ul>
 		
-			        <c:if test="${empty requestScope.commentList}">
-			            <div>작성된 댓글이 없습니다.</div>
-			        </c:if>
+		        <c:if test="${empty requestScope.commentList}">
+		            <div>작성된 댓글이 없습니다.</div>
+		        </c:if>
 
 			</div>
 			<c:if test="${not empty requestScope.commentList}">

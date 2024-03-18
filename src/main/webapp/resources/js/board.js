@@ -25,11 +25,11 @@ function boardDelete(id) {
 
 			if (response.data === "성공") {
 				window.location.href = "/board/";
+				alert("삭제되었습니다.");
 			} else {
 				window.location.href = "/board/" + id;
 			}
 
-			alert("삭제되었습니다.");
 
 		}).catch(err => {
 			if (err.response && err.response.status === 502) {
@@ -87,11 +87,12 @@ function loadItems(page, board_id) {
         `;
 
 			let useremail = document.getElementById('useremail').value;
+			let username = document.getElementById('username').value;
 
 			if (data.entityList) {
 				data.entityList.forEach(function(c) {
 					resultHtml += `
-	              			<li style="margin-left:${c.comment_indent}rem;">
+	              			<li style="margin-left:${c.comment_indent*5}%;">
 	                        	<div>
 	                                <p>${c.useremail}</p>
 	                                <span>${c.comment_regdate}</span>
@@ -113,18 +114,19 @@ function loadItems(page, board_id) {
 		                             <button class="del-btn" type="button" data-idx="${c.comment_id}" onclick="commentDelete(${c.comment_id})">삭제</button>
 		                        </div>
 	                        </div>
-	                        <div id="reply-${c.comment_id}" style="display: none;">
-                            	<form action="ReplyInsert" method="post">
-									<span>${useremail}</span>
-									<input type="hidden" id="board_id" name="board_id" value="${c.board_id}" />
-									<input type="hidden" id="useremail" name="useremail" value="${useremail}" />
-									<input type="hidden" id="comment_root" name="comment_root" value="${c.comment_id}" />
-									<input type="hidden" id="comment_steps" name="comment_steps" value="${c.comment_steps}" />
-									<input type="hidden" id="comment_indent" name="comment_indent" value="${c.comment_indent}" />
-									<textarea id="comment_content" name="comment_content" placeholder="댓글을 입력해 주세요." maxlength="1000" required ></textarea>
-									<button>등록</button>
-								</form>
-							</div>
+	                        <div class="commentInsert" id="reply-${c.comment_id}" style="display: none;">
+                                	<form action="ReplyInsert" method="post">
+										<p>${useremail} &#40;${username}&#41;</p>
+										<input type="hidden" id="board_id" name="board_id" value="${c.board_id}" />
+										<input type="hidden" id="useremail" name="useremail" value="${useremail}" />
+										<input type="hidden" id="comment_root" name="comment_root" value="${c.comment_id}" />
+										<input type="hidden" id="comment_steps" name="comment_steps" value="${c.comment_steps}" />
+										<input type="hidden" id="comment_indent" name="comment_indent" value="${c.comment_indent}" />
+										<textarea id="comment_content" name="comment_content" placeholder="댓글을 입력해 주세요." maxlength="1000" required ></textarea>
+										<button>등록</button>
+										<button type="button" onclick="cancleComment(${c.comment_id})">취소</button>
+									</form>
+								</div>
 	                    </li>
 						`;
 					}else{
@@ -287,6 +289,13 @@ function updateCommentOnServer(commentId, updatedComment) {
 
 // 답글 기능
 function toggleReply(comment_id) {
-    const replyContainer = document.getElementById(`reply-${comment_id}`);
-    replyContainer.style.display = (replyContainer.style.display === 'none') ? 'block' : 'none';
+    const reply = document.getElementById(`reply-${comment_id}`);
+    reply.style.display = (reply.style.display === 'none') ? 'block' : 'none';
+}
+
+function cancleComment(comment_id){
+	const reply = document.getElementById(`reply-${comment_id}`);
+	
+	reply.style.display = 'none';
+	reply.querySelector('#comment_content').value = "";
 }

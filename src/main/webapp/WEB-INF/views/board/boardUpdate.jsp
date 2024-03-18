@@ -5,13 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 상세보기</title>
+<title>게시글 수정</title>
+<link rel="stylesheet" href="/resources/css/board.css">
 </head>
 <body>
 	<div id="wrap">
-		<div>
+		<div class="board_save board_update">
 			<form action="/board/${requestScope.boardDetail.board_id}" method="post">
-				<table border="1px">
+				<table>
 					<tr>
 						<th>번호</th>
 						<td>${requestScope.boardDetail.board_id}
@@ -32,12 +33,8 @@
 					</tr>
 					<tr>
 						<th>글제목</th>
-						<td colspan="3">
+						<td colspan="5">
 							<input type="text" id="board_title" name="board_title" value="${requestScope.boardDetail.board_title}" />
-						</td>
-						<th>조회수</th>
-						<td>${requestScope.boardDetail.board_views}
-							<input type="hidden" id="board_views" name="board_views" value="${requestScope.boardDetail.board_views}" />
 						</td>
 					</tr>
 					<tr>
