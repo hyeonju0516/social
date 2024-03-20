@@ -205,7 +205,7 @@ function deleteComment(comment_id) {
     let url = `/board/deleteComment/${comment_id}`;
 
     if (confirm("삭제하시겠습니까?")) {
-        axios.post(url,{ headers: { 'Content-Type': 'application/json' } })
+        axios.delete(url,{ headers: { 'Content-Type': 'application/json' } })
             .then(response => {
                 alert("삭제되었습니다.");
                 location.reload();
@@ -228,7 +228,7 @@ function toggleLike(board_id, useremail) {
 
 	let url = "/board/likesInsert/" + board_id + "/" + useremail;
 
-	axios.delete(url)
+	axios.post(url)
 		.then(response => {
 			let likeCountElement = document.getElementById('likeCount');
 			let currentLikeCount = parseInt(likeCountElement.textContent);
