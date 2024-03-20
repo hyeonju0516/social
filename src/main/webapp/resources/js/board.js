@@ -228,7 +228,7 @@ function toggleLike(board_id, useremail) {
 
 	let url = "/board/likesInsert/" + board_id + "/" + useremail;
 
-	axios.post(url)
+	axios.delete(url)
 		.then(response => {
 			let likeCountElement = document.getElementById('likeCount');
 			let currentLikeCount = parseInt(likeCountElement.textContent);
