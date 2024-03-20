@@ -202,27 +202,26 @@ function getInputValue(elementId) {
 }
 
 function deleteComment(comment_id) {
+    let url = `/board/deleteComment/${comment_id}`;
 
-	let url = `/board/deleteComment/${comment_id}`;
+    if (confirm("삭제하시겠습니까?")) {
+        axios.delete(url, { headers: { 'Content-Type': 'application/json' } })
+            .then(response => {
+                alert("삭제되었습니다.");
+                location.reload();
 
-	if (confirm("삭제하시겠습니까?")) {
-		axios.delete(url,{ headers: { 'Content-Type': 'application/json' } }
-		).then(response => {
-			alert("삭제되었습니다.");
-			location.reload();
-
-		}).catch(err => {
-			if (err.response && err.response.status === 502) {
-				alert("[삭제 오류]" + err.response.data);
-			} else {
-				alert("[시스템 오류]" + err.message);
-			}
-		});
-	} else {
-		alert("취소되었습니다.");
-	}
-
+            }).catch(err => {
+                if (err.response && err.response.status === 502) {
+                    alert("[삭제 오류]" + err.response.data);
+                } else {
+                    alert("[시스템 오류]" + err.message);
+                }
+            });
+    } else {
+        alert("취소되었습니다.");
+    }
 }
+
 
 function toggleLike(board_id, useremail) {
 	console.log(board_id, useremail);
