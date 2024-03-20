@@ -31,7 +31,7 @@
 					<td>${requestScope.boardDetail.board_views}</td>
 				</tr>
 				<tr>
-					<td colspan="6" id="board_content">${requestScope.boardDetail.board_content}</td>
+					<td colspan="6" id="content">${requestScope.boardDetail.board_content}</td>
 				</tr>
 			</table>
 		</div>

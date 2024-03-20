@@ -207,7 +207,7 @@ function commentDelete(comment_id) {
 
 
 	if (confirm("삭제하시겠습니까?")) {
-		axios.delete(url
+		axios.get(url
 		).then(response => {
 			alert("삭제되었습니다.");
 			location.reload();

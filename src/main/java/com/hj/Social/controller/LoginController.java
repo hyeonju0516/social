@@ -26,12 +26,12 @@ public class LoginController {
 
 	}
 	
-//	@GetMapping("/loginMaster")
-//	public String loginMaster(HttpSession session) {
-//		User loginUser = new User("마스터","","마스터", "master@email.com");
-//		session.setAttribute("loginUser", loginUser);
-//		return "redirect:/";
-//	}
+	@GetMapping("/loginMaster")
+	public String loginMaster(HttpSession session) {
+		User loginUser = new User("마스터","","마스터", "master@email.com");
+		session.setAttribute("loginUser", loginUser);
+		return "redirect:/";
+	}
 	
 
 	@GetMapping("/klogin")

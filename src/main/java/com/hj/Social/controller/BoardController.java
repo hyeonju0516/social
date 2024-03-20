@@ -262,15 +262,14 @@ public class BoardController {
 	}
 	
 	
-	@DeleteMapping("/deleteComment")
+	@GetMapping("/deleteComment")
 	public ResponseEntity<?> deleteComment(@RequestParam("comment_id")int comment_id ) {
 		
 		Comments entity = commService.selectDetail(comment_id);
 		try {
+			System.out.println("comment_id********" + comment_id);
 			
-			entity.setComment_deldate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-			entity.setComment_delyn("Y");
-			commService.save(entity);
+			commService.delete(entity);
 			
 			return ResponseEntity.ok().build();
 			

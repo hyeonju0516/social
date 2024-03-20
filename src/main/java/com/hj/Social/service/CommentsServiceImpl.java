@@ -69,7 +69,7 @@ public class CommentsServiceImpl implements CommentsService {
 			            .and(comments.comment_id.ne(entity.getComment_id()))
 			    );
 
-			update.execute();
+		update.execute();
 	}
 	
 	@Override
@@ -87,11 +87,20 @@ public class CommentsServiceImpl implements CommentsService {
 	}
 
 	
-	
 	@Override
-	public int delete(int id) {
-		repository.deleteById(id);
-		return id;
-	}
+	@Transactional
+	public int delete(Comments entity) {
+        String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        long updatedCount = queryFactory.update(comments)
+                .set(comments.comment_delyn, "Y")
+                .set(comments.comment_deldate, now)
+                .where(comments.comment_root.eq(entity.getComment_id())
+                        .or(comments.comment_root.eq(entity.getComment_root())
+                            .and(comments.comment_steps.between(entity.getComment_steps(), entity.getComment_steps() + entity.getComment_steps()))))
+                .execute();
+
+        return (int) updatedCount;
+    }
 
 }

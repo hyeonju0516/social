@@ -27,7 +27,7 @@
 		   	<a href="social/loginPage">로그인</a>
 		   </c:if>
 		   
-		   <!-- <a href="social/loginMaster">임시로그인</a> -->
+		   <a href="social/loginMaster">임시로그인</a>
 	   </div>
    </div>
    
