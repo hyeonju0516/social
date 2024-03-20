@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -119,7 +118,7 @@ public class BoardController {
 	@PostMapping(value = "/boardInsert")
 	public String postBoardInsert(RedirectAttributes rttr, Board entity) {
 		
-		String uri="redirect:boardInsert";
+		String uri="board/boardInsert";
 		
 		try {
 			entity.setBoard_regdate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -286,8 +285,8 @@ public class BoardController {
     }
 	
 	
-	@DeleteMapping("/deleteComment")
-	public ResponseEntity<?> deleteComment(@RequestBody int comment_id ) {
+	@DeleteMapping("/deleteComment/{comment_id}")
+	public ResponseEntity<?> deleteComment(@PathVariable int comment_id ) {
 		
 		Comments entity = commService.selectDetail(comment_id);
 		try {
