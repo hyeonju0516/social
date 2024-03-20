@@ -162,17 +162,17 @@ public class BoardController {
 	
 	@PostMapping(value="/delete")
 	@ResponseBody
-	public String deleteBoard(@RequestBody int id) {
+	public String deleteBoard(@RequestBody int board_id) {
 		
 		try {
 			
-			Board entity = boardService.selectDetail(id);
+			Board entity = boardService.selectDetail(board_id);
 			if(entity != null) {
 				entity.setBoard_delyn("Y");
 				entity.setBoard_deldate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 				boardService.save(entity);
 				
-				commService.boardDelete(id);
+				commService.boardDelete(board_id);
 				
 				return "성공";
 			}else {
@@ -262,26 +262,6 @@ public class BoardController {
 	}
 	
 	
-	@PostMapping("/deleteComment")
-	public ResponseEntity<?> deleteComment(@RequestBody int comment_id ) {
-		
-		Comments entity = commService.selectDetail(comment_id);
-		try {
-			System.out.println("comment_id********" + comment_id);
-			
-			commService.delete(entity);
-			
-			return ResponseEntity.ok().build();
-			
-		} catch (Exception e) {
-			System.out.println("comment delete Exception" + e.toString());			
-			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-		}
-		
-		
-	}
-	
-	
 	@PostMapping(value = "/updateComments")
 	@ResponseBody
     public String updateComments(@RequestParam("comment_id") int comment_id, @RequestParam("comment_content") String comment_content, HttpSession session, Model model) {
@@ -304,5 +284,24 @@ public class BoardController {
             return "Error";
         }
     }
+	
+	
+	@PostMapping("/deleteComment")
+	public ResponseEntity<?> deleteComment(@RequestBody int comment_id ) {
+		
+		Comments entity = commService.selectDetail(comment_id);
+		try {
+			
+			commService.delete(entity);
+			
+			return ResponseEntity.ok().build();
+			
+		} catch (Exception e) {
+			System.out.println("comment delete Exception" + e.toString());			
+			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.toString());
+		}
+		
+		
+	}
 	    
 }

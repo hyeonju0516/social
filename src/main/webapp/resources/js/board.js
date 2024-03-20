@@ -13,11 +13,11 @@ function keywordClear() {
     }
 }
       
-function boardDelete(id) {
+function boardDelete(board_id) {
 	let url = "/board/delete";
 
 	if (confirm("삭제하시겠습니까?")) {
-		axios.post(url, id,
+		axios.post(url, board_id,
 			{ headers: { 'Content-Type': 'application/json' } }
 		).then(response => {
 
@@ -207,7 +207,8 @@ function commentDelete(comment_id) {
 
 
 	if (confirm("삭제하시겠습니까?")) {
-		axios.post(url,comment_id,{ headers: { 'Content-Type': 'application/json' } }
+		axios.post(url,comment_id,
+			{ headers: { 'Content-Type': 'application/json' } }
 		).then(response => {
 			alert("삭제되었습니다.");
 			location.reload();
