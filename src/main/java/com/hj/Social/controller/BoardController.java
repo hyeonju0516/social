@@ -287,7 +287,7 @@ public class BoardController {
 	
 	@PostMapping("/delete/comment")
 	@ResponseBody
-	public ResponseEntity<?> deleteComment(@RequestParam int comment_id ) {
+	public ResponseEntity<?> deleteComment(@RequestParam("comment_id") int comment_id ) {
 		
 		Comments entity = commService.selectDetail(comment_id);
 		try {
