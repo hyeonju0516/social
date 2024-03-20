@@ -285,7 +285,7 @@ public class BoardController {
     }
 	
 	
-	@PostMapping("/delete/comment")
+	@PostMapping("/deleteComment")
 	@ResponseBody
 	public ResponseEntity<?> deleteComment(@RequestParam("comment_id") int comment_id ) {
 		
