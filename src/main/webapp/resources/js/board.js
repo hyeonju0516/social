@@ -203,10 +203,10 @@ function getInputValue(elementId) {
 
 function deleteComment(comment_id) {
 
-	let url = `/social/deleteComment`;
+	let url = `/board/deleteComment`;
 
 	if (confirm("삭제하시겠습니까?")) {
-		axios.post(url, { comment_id : comment_id},
+		axios.delete(url, { comment_id : comment_id },
 			{ headers: { 'Content-Type': 'application/json' } }
 		).then(response => {
 			alert("삭제되었습니다.");
