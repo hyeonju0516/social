@@ -17,7 +17,7 @@ function boardDelete(board_id) {
 	let url = "/board/delete";
 
 	if (confirm("삭제하시겠습니까?")) {
-		axios.post(url, {board_id: board_id},
+		axios.post(url, board_id,
 			{ headers: { 'Content-Type': 'application/json' } }
 		).then(response => {
 
@@ -206,7 +206,7 @@ function deleteComment(comment_id) {
 	let url = `/board/deleteComment`;
 
 	if (confirm("삭제하시겠습니까?")) {
-		axios.delete(url, { comment_id : comment_id },
+		axios.delete(url, comment_id,
 			{ headers: { 'Content-Type': 'application/json' } }
 		).then(response => {
 			alert("삭제되었습니다.");
