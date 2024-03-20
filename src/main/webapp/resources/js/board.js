@@ -201,13 +201,15 @@ function getInputValue(elementId) {
 	return document.getElementById(elementId).value;
 }
 
-function commentDelete(comment_id) {
+function deleteComment(comment_id) {
 
 	let url = `/board/deleteComment`;
+	
+	console.log(comment_id);
 
 
 	if (confirm("삭제하시겠습니까?")) {
-		axios.post(url, {comment_id:comment_id},
+		axios.post(url, { comment_id : comment_id},
 			{ headers: { 'Content-Type': 'application/json' } }
 		).then(response => {
 			alert("삭제되었습니다.");

@@ -80,7 +80,7 @@
 	                                <c:if test="${sessionScope.loginUser.useremail == c.useremail}">
 	                                    <div>
 	                                        <button data-idx="${c.comment_id}" class="edit-btn" onclick="commentUpdate(this)">수정</button>
-	                                        <button class="del-btn" type="button" data-idx="${c.comment_id}" onclick="commentDelete(${c.comment_id})">삭제</button>
+	                                        <button class="del-btn" type="button" data-idx="${c.comment_id}" onclick="deleteComment(${c.comment_id})">삭제</button>
 		                                </div>
 	                                </c:if>
                                 </div>
