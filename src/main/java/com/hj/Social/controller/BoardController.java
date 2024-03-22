@@ -287,18 +287,18 @@ public class BoardController {
 	
 	@PostMapping(value ="/delete/comment")
 	@ResponseBody
-	public ResponseEntity<?> deleteComment(@RequestBody Comments entity ) {
+	public String deleteComment(@RequestBody Comments entity ) {
 		
 		entity = commService.selectDetail(entity.getComment_id());
 		try {
 			
 			commService.delete(entity);
 			
-			return ResponseEntity.ok().build();
+			return "성공";
 			
 		} catch (Exception e) {
 			System.out.println("comment delete Exception" + e.toString());			
-			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.toString());
+			return "실패 => " + e.toString();
 		}
 		
 		

@@ -29,3 +29,6 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+    hiddenmethod:
+      filter:
+        enabled: true
