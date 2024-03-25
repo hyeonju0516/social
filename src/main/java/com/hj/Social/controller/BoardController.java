@@ -110,6 +110,25 @@ public class BoardController {
 
 	}
 	
+	@PostMapping(value ="/delete/comment")
+	@ResponseBody
+	public String deleteComment(@RequestBody int comment_id ) {
+		
+		Comments entity = commService.selectDetail(comment_id);
+		try {
+			
+			commService.delete(entity);
+			
+			return "성공";
+			
+		} catch (Exception e) {
+			System.out.println("comment delete Exception" + e.toString());			
+			return "실패 => " + e.toString();
+		}
+		
+		
+	}
+	
 	@GetMapping(value = "/boardInsert")
 	public void getBoardInsert() {
 		
@@ -284,24 +303,5 @@ public class BoardController {
         }
     }
 	
-	
-	@PostMapping(value ="/delete/comment")
-	@ResponseBody
-	public String deleteComment(@RequestBody int comment_id ) {
-		
-		Comments entity = commService.selectDetail(comment_id);
-		try {
-			
-			commService.delete(entity);
-			
-			return "성공";
-			
-		} catch (Exception e) {
-			System.out.println("comment delete Exception" + e.toString());			
-			return "실패 => " + e.toString();
-		}
-		
-		
-	}
 	    
 }
