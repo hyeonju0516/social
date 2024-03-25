@@ -15,7 +15,6 @@ spring:
     password: mysql
   application:
     name: social
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -24,7 +23,6 @@ spring:
           format_sql: true
           dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
-
   mvc:
     view:
       prefix: /WEB-INF/views/
@@ -32,3 +30,4 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+    annotation-driven: true
