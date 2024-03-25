@@ -201,7 +201,7 @@ function getInputValue(elementId) {
 	return document.getElementById(elementId).value;
 }
 
-function deleteComment(comment_id) {
+function deleteComment(comment_id) {s
     let url = `/board/delete/comment`;
 
     if (confirm("삭제하시겠습니까?")) {
