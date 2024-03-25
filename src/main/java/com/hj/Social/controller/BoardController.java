@@ -285,11 +285,11 @@ public class BoardController {
     }
 	
 	
-	@PostMapping(value ="/delete/comment")
+	@PostMapping(value ="/delete/comment/{comment_id}")
 	@ResponseBody
-	public String deleteComment(@RequestBody Comments entity ) {
+	public String deleteComment(@PathVariable("comment_id") int comment_id ) {
 		
-		entity = commService.selectDetail(entity.getComment_id());
+		Comments entity = commService.selectDetail(comment_id);
 		try {
 			
 			commService.delete(entity);

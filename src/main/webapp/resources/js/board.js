@@ -201,16 +201,16 @@ function getInputValue(elementId) {
 	return document.getElementById(elementId).value;
 }
 
-function deleteComment(comment_id) {s
-    let url = `/board/delete/comment`;
+function deleteComment(comment_id) {
+    let url = `/board/delete/comment/${comment_id}`;
 
     if (confirm("삭제하시겠습니까?")) {
-        axios.post(url,{ comment_id : comment_id },
+        axios.post(url,
+        		null,
         		{ headers: { 'Content-Type': 'application/json' } })
             .then(response => {
                 alert("삭제되었습니다.");
                 location.reload();
-
             }).catch(err => {
                 if (err.response && err.response.status === 502) {
                     alert("[삭제 오류]" + err.response.data);
@@ -222,6 +222,7 @@ function deleteComment(comment_id) {s
         alert("취소되었습니다.");
     }
 }
+
 
 
 function toggleLike(board_id, useremail) {
