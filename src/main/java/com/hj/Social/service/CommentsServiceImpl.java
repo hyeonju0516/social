@@ -34,7 +34,7 @@ public class CommentsServiceImpl implements CommentsService {
 		QueryResults<Comments> result = queryFactory
 	            .selectFrom(comments)
 	            .where(comments.comment_delyn.eq("N").and(comments.board_id.eq(id)))
-	            .orderBy(comments.comment_root.asc(),comments.comment_steps.asc())
+	            .orderBy(comments.comment_root.desc(),comments.comment_steps.asc())
 	            .offset(requestDTO.getPageable().getOffset())
 	            .limit(requestDTO.getPageable().getPageSize())
 	            .fetchResults();
