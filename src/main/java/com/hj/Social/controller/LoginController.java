@@ -34,13 +34,57 @@ public class LoginController {
 	}
 	
 
-	@GetMapping("/login")
-	public String login(@RequestParam("code") String code, @RequestParam("type") String type, HttpSession session) {
+	@GetMapping("/nlogin")
+	public String nlogin(@RequestParam("code") String code, HttpSession session) {
 		
-		String access_token = socialService.getAccessToken(code, type);
+		String access_token = socialService.getAccessToken(code, "naver");
 
 		try {
-			User userInfo = socialService.getUserInfo(access_token,type);
+			User userInfo = socialService.getUserInfo(access_token, "naver");
+			
+			System.out.println("*****************"+userInfo);
+			if (userInfo != null) {
+				session.setAttribute("loginUser", userInfo);
+				return "redirect:/index";
+			} else {
+				return "redirect:/social/loginPage";
+			}
+			
+		} catch (Exception e) {
+			return "redirect:/social/loginPage";
+		}
+
+	}
+	
+	@GetMapping("/klogin")
+	public String klogin(@RequestParam("code") String code, HttpSession session) {
+		
+		String access_token = socialService.getAccessToken(code, "kakao");
+
+		try {
+			User userInfo = socialService.getUserInfo(access_token, "kakao");
+			
+			System.out.println("*****************"+userInfo);
+			if (userInfo != null) {
+				session.setAttribute("loginUser", userInfo);
+				return "redirect:/index";
+			} else {
+				return "redirect:/social/loginPage";
+			}
+			
+		} catch (Exception e) {
+			return "redirect:/social/loginPage";
+		}
+
+	}
+	
+	@GetMapping("/glogin")
+	public String glogin(@RequestParam("code") String code, HttpSession session) {
+		
+		String access_token = socialService.getAccessToken(code, "google");
+
+		try {
+			User userInfo = socialService.getUserInfo(access_token, "google");
 			
 			System.out.println("*****************"+userInfo);
 			if (userInfo != null) {
