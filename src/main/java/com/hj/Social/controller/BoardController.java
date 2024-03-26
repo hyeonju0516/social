@@ -137,13 +137,11 @@ public class BoardController {
 	@PostMapping(value = "/boardInsert")
 	public String postBoardInsert(RedirectAttributes rttr, Board entity) {
 		
-		String uri="board/boardInsert";
-		
 		try {
 			entity.setBoard_regdate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 			entity.setBoard_delyn("N");
 			if(boardService.save(entity) != null) {
-				uri = "redirect:/board/";
+
 			}else {
 				rttr.addFlashAttribute("message","글 등록 실패");
 			}
@@ -152,7 +150,7 @@ public class BoardController {
 			System.out.println("boardInsert Exception" + e.toString());			
 		}
 		
-		return uri;
+		return "redirect:/board/";
 		
 	}
 	
