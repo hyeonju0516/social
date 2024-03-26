@@ -35,14 +35,14 @@ public class LoginController {
 	
 
 	@GetMapping("/login")
-	public String klogin(@RequestParam("code") String code, HttpSession session, @RequestParam("type") String type) {
+	public String login(@RequestParam("code") String code, @RequestParam("type") String type, HttpSession session) {
 		
 		String access_token = socialService.getAccessToken(code, type);
 
 		try {
 			User userInfo = socialService.getUserInfo(access_token,type);
+			
 			System.out.println("*****************"+userInfo);
-
 			if (userInfo != null) {
 				session.setAttribute("loginUser", userInfo);
 				return "redirect:/index";
@@ -51,7 +51,6 @@ public class LoginController {
 			}
 			
 		} catch (Exception e) {
-			
 			return "redirect:/social/loginPage";
 		}
 
