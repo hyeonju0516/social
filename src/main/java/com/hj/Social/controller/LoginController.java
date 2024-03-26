@@ -34,7 +34,7 @@ public class LoginController {
 	}
 	
 
-	@GetMapping("/klogin")
+	@GetMapping("/login")
 	public String klogin(@RequestParam("code") String code, HttpSession session, @RequestParam("type") String type) {
 		
 		String access_token = socialService.getAccessToken(code, type);
