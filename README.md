@@ -44,5 +44,4 @@
 
 —
 
-## 🥸 회고
-블로그 주소(https://eocoring.tistory.com/category/Spring%20Boot)
+
